@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>AI Fluency Framework for Product Managers — The Future of Work</title>
+<title>The Future of Work for Product Managers</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
   :root {
     --navy:   #000A3B;
-    --blue1:  #11518A;
-    --blue2:  #226CA1;
+    --blue1:  #1A5080;
+    --blue2:  #2A6A9A;
     --white:  #FFFFFF;
     --light:  #F1F1F1;
     --text:   #111827;   /* stronger than before — passes AA on white */
     --muted:  #374151;   /* was #5a6470 — lifted for contrast */
-    --bg:     #F8F9FB;
+    --bg:     #F6F9FC;
     --card:   #FFFFFF;
     --border: #C9D3DC;   /* was #e2e6ea — darker for visibility */
   }
@@ -73,39 +73,52 @@
     content: '';
     position: absolute; top: -200px; right: -200px;
     width: 600px; height: 600px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(34,108,161,0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(42,106,154,0.25) 0%, transparent 70%);
     pointer-events: none; aria-hidden: true;
   }
   .hero-series {
     font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
-    text-transform: uppercase; color: #7ab3d4; margin-bottom: 10px;
+    text-transform: uppercase; color: #A8D4F0; margin-bottom: 10px;
   }
   .hero-eyebrow {
     font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
-    text-transform: uppercase; color: #4a7a9b; margin-bottom: 28px;
+    text-transform: uppercase; color: #6A8AAA; margin-bottom: 28px;
   }
   .hero h1 {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(46px, 7vw, 84px);
+    font-size: clamp(24px, 5.56vw, 120px);
     font-weight: 700; color: var(--white);
-    line-height: 1.06; max-width: 820px; margin-bottom: 32px;
+    line-height: 1.06; max-width: none; margin-bottom: 32px;
+    white-space: nowrap;
   }
-  .hero h1 em { font-style: italic; color: #7ab3d4; }
+  .hero h1 em { font-style: italic; color: #A8D4F0; }
   .hero-sub {
     font-size: 18px; font-weight: 300;
-    color: #9fb8cc;   /* lifted from #9FA8AB for better contrast on navy */
+    color: #B0CCE0;   /* lifted from #9FA8AB for better contrast on navy */
     max-width: 560px; margin-bottom: 36px; line-height: 1.65;
   }
   .hero-author {
-    font-size: 14px; color: #4a6a80; font-weight: 400;
+    font-size: 14px; color: #5A7A98; font-weight: 400;
   }
+  .hero-doc-ref {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(42,106,154,0.25);
+    font-size: 11px; color: #4A6880; line-height: 1.7;
+    max-width: 500px;
+  }
+  .hero-doc-ref a {
+    color: #A8D4F0; text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .hero-doc-ref a:hover { color: #ffffff; }
   .hero-scroll {
     position: absolute; bottom: 40px; left: 60px;
     display: flex; align-items: center; gap: 12px;
-    color: #4a7a9b; font-size: 11px; letter-spacing: 0.12em;
+    color: #6A8AAA; font-size: 11px; letter-spacing: 0.12em;
     text-transform: uppercase; animation: pulse 2.2s ease-in-out infinite;
   }
-  .hero-scroll-line { width: 36px; height: 1px; background: #4a7a9b; }
+  .hero-scroll-line { width: 36px; height: 1px; background: #6A8AAA; }
   @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
 
   /* ── STICKY NAV ── */
@@ -115,14 +128,14 @@
     backdrop-filter: blur(8px);
     z-index: 100; padding: 0 60px;
     display: flex; align-items: center;
-    border-bottom: 1px solid rgba(34,108,161,0.35);
+    border-bottom: 1px solid rgba(42,106,154,0.35);
     role: navigation;
   }
   .nav-item {
     padding: 16px 20px;
     font-size: 12px; font-weight: 500;
     letter-spacing: 0.06em; text-transform: uppercase;
-    color: #7a9ab6;   /* lifted from #5a7a96 for contrast on navy */
+    color: #8AAAC8;   /* lifted from #5a7a96 for contrast on navy */
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
@@ -147,7 +160,7 @@
   }
   .section-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(32px, 4vw, 50px);
+    font-size: clamp(32px, 4.28vw, 49px);
     font-weight: 700; color: var(--navy);
     line-height: 1.15; margin-bottom: 24px; max-width: 700px;
   }
@@ -178,7 +191,7 @@
     letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px;
   }
   .col-label-dark { color: #4A5568; }   /* lifted from gray */
-  .col-label-light { color: #7ab3d4; }
+  .col-label-light { color: #A8D4F0; }
   .col-item {
     display: flex; align-items: flex-start; gap: 12px;
     margin-bottom: 14px; font-size: 15px;
@@ -194,7 +207,7 @@
 
   /* ── VIGNETTE CARDS ── */
   .vignette {
-    display: grid; grid-template-columns: 260px 1fr;
+    display: grid; grid-template-columns: 290px 1fr;
     border-radius: 12px; overflow: hidden;
     margin-bottom: 28px;
     box-shadow: 0 2px 24px rgba(0,10,59,0.1);
@@ -209,13 +222,13 @@
   }
   .vignette-num {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 60px; font-weight: 700;
-    color: rgba(34,108,161,0.35); line-height: 1; margin-bottom: 8px;
+    font-size: 51px; font-weight: 700;
+    color: rgba(42,106,154,0.35); line-height: 1; margin-bottom: 8px;
   }
   .vignette-stage {
     font-size: 10px; font-weight: 600;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: #7ab3d4; margin-bottom: 8px;  /* was var(--blue2) — more contrast on navy */
+    color: #A8D4F0; margin-bottom: 8px;  /* was var(--blue2) — more contrast on navy */
   }
   .vignette-title {
     font-family: 'Playfair Display', Georgia, serif;
@@ -223,9 +236,9 @@
     color: var(--white); line-height: 1.2;
   }
   .vignette-tagline {
-    font-size: 12px; color: #6A8FA8;  /* was #4a6a80 — lifted slightly */
+    font-size: 12px; color: #7A9FC0;  /* was #5A7A98 — lifted slightly */
     font-style: italic; margin-top: auto; padding-top: 24px;
-    border-top: 1px solid rgba(34,108,161,0.25); line-height: 1.5;
+    border-top: 1px solid rgba(42,106,154,0.25); line-height: 1.5;
   }
   .vignette-body {
     background: var(--card);
@@ -243,8 +256,8 @@
     border: 1px solid #B8C4D0;
   }
   .ba-after {
-    background: #E0EEF8;    /* was #eef6ff */
-    border: 1px solid #92BCDC;
+    background: #DCF0FA;    /* was #eef6ff */
+    border: 1px solid #8AB8DC;
   }
   .ba-label {
     font-size: 10px; font-weight: 600;
@@ -270,10 +283,10 @@
   .vignette-pullquote {
     border-left: 3px solid var(--blue2);
     padding: 14px 18px;
-    background: #E8F2FB;   /* was #f0f7ff — slightly richer */
+    background: #E4F2FC;   /* was #f0f7ff — slightly richer */
     border-radius: 0 8px 8px 0;
-    font-size: 14px; font-style: italic;
-    color: #0A2540;   /* was #1a3a5c — much stronger */
+    font-size: 14px;
+    color: #0A2540;
     line-height: 1.65;
   }
 
@@ -281,35 +294,35 @@
   .section-dark { background: var(--navy); padding: 100px 0; }
   .section-dark-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
   .section-dark .section-title { color: var(--white); }
-  .section-dark .section-lead  { color: #8AACBF; }  /* was #5a7a96 — lifted */
+  .section-dark .section-lead  { color: #9ABCD4; }  /* was #5a7a96 — lifted */
 
   .shifts-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px;
   }
   .shift-card {
     background: rgba(255,255,255,0.06);  /* was 0.04 — more visible */
-    border: 1px solid rgba(34,108,161,0.35);
+    border: 1px solid rgba(42,106,154,0.35);
     border-radius: 10px; padding: 28px 32px;
     opacity: 0; transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
   .shift-card.visible { opacity: 1; transform: translateY(0); }
   .shift-card:hover {
-    background: rgba(34,108,161,0.14);
-    border-color: rgba(34,108,161,0.6);
+    background: rgba(42,106,154,0.14);
+    border-color: rgba(42,106,154,0.6);
   }
   .shift-num {
     font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; color: #7ab3d4; margin-bottom: 10px;
+    letter-spacing: 0.15em; color: #A8D4F0; margin-bottom: 10px;
   }
   .shift-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 20px; font-weight: 700;
+    font-size: 21px; font-weight: 700;
     color: var(--white); margin-bottom: 10px; line-height: 1.3;
   }
   .shift-desc {
     font-size: 14px;   /* was 13px */
-    color: #8AACBF;    /* was #5a7a96 */
+    color: #9ABCD4;    /* was #5a7a96 */
     line-height: 1.65;
   }
 
@@ -328,14 +341,14 @@
   .constant-card.visible { opacity: 1; transform: translateY(0); }
   .constant-icon {
     width: 52px; height: 52px; border-radius: 50%;
-    background: #E0EEF8; border: 1px solid #92BCDC;
+    background: #DCF0FA; border: 1px solid #8AB8DC;
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 20px;
   }
   .constant-icon svg { width: 22px; height: 22px; }
   .constant-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 20px; font-weight: 700;
+    font-size: 21px; font-weight: 700;
     color: var(--navy); margin-bottom: 12px;
   }
   .constant-desc {
@@ -353,37 +366,42 @@
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%,-50%);
     width: 600px; height: 600px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(34,108,161,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(42,106,154,0.15) 0%, transparent 70%);
     pointer-events: none;
   }
   .cta-title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(30px, 4vw, 52px); font-weight: 700;
+    font-size: clamp(30px, 4.28vw, 51px); font-weight: 700;
     color: var(--white); line-height: 1.15;
     max-width: 680px; margin: 0 auto 48px;
   }
-  .cta-title em { font-style: italic; color: #7ab3d4; }
-  .cta-framework-link {
-    display: inline-block;
-    margin-bottom: 48px;
-    background: var(--blue2); color: white;
-    font-size: 14px; font-weight: 500;
-    padding: 14px 32px; border-radius: 6px;
-    text-decoration: none; letter-spacing: 0.04em;
-    transition: background 0.2s;
-  }
-  .cta-framework-link:hover { background: var(--blue1); }
-  .cta-framework-link:focus-visible {
-    outline: 3px solid #7ab3d4; outline-offset: 3px;
-  }
+  .cta-title em { font-style: italic; color: #A8D4F0; }
   .cta-asks {
     display: flex; flex-direction: column; gap: 0;
-    max-width: 600px; margin: 0 auto 56px; text-align: left;
+    max-width: 600px; margin: 0 auto 48px; text-align: left;
   }
+  .cta-buttons {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .cta-btn {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 14px 28px; border-radius: 6px;
+    text-decoration: none; transition: background 0.2s, color 0.2s, border-color 0.2s;
+    display: inline-block;
+  }
+  .cta-btn-outline {
+    border: 1.5px solid #A8D4F0; color: #A8D4F0; background: transparent;
+  }
+  .cta-btn-outline:hover { background: #A8D4F0; color: var(--navy); border-color: #A8D4F0; }
+  .cta-btn-solid {
+    background: var(--blue2); color: white; border: 1.5px solid var(--blue2);
+  }
+  .cta-btn-solid:hover { background: #4A8EC0; border-color: #4A8EC0; }
   .cta-ask {
     display: flex; align-items: flex-start; gap: 20px;
     padding: 24px 0;
-    border-bottom: 1px solid rgba(34,108,161,0.25);
+    border-bottom: 1px solid rgba(42,106,154,0.25);
     opacity: 0; transform: translateX(-20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
@@ -391,15 +409,15 @@
   .cta-ask.visible { opacity: 1; transform: translateX(0); }
   .cta-ask-num {
     font-size: 11px; font-weight: 600;
-    letter-spacing: 0.12em; color: #7ab3d4;
+    letter-spacing: 0.12em; color: #A8D4F0;
     padding-top: 4px; min-width: 24px;
   }
   .cta-ask-title { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
-  .cta-ask-desc  { font-size: 14px; color: #8AACBF; line-height: 1.55; }
+  .cta-ask-desc  { font-size: 14px; color: #9ABCD4; line-height: 1.55; }
   .cta-byline {
-    font-size: 14px; color: #4A6A80;
-    max-width: 480px; margin: 0 auto;
-    line-height: 1.65; font-style: italic;
+    font-size: 16px; color: #8AAAC8;
+    max-width: 580px; margin: 0 auto 56px;
+    line-height: 1.75;
   }
 
   /* ── AUTHOR BIO ── */
@@ -413,15 +431,14 @@
     display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start;
   }
   .author-avatar {
-    width: 88px; height: 88px; border-radius: 50%;
-    background: var(--navy);
+    width: 100px; height: 100px; border-radius: 50%;
     border: 3px solid var(--blue2);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    flex-shrink: 0; overflow: hidden;
   }
-  .author-avatar-initials {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 28px; font-weight: 700; color: #7ab3d4;
+  .author-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 18%;
+    display: block;
   }
   .author-label {
     font-size: 10px; font-weight: 600;
@@ -446,7 +463,7 @@
   .footer-left  { font-size: 12px; color: #3A5060; }
   .footer-right { font-size: 12px; color: #3A5060; font-style: italic; }
   .footer-right a { color: #5A8AAA; text-decoration: underline; }
-  .footer-right a:hover { color: #7ab3d4; }
+  .footer-right a:hover { color: #A8D4F0; }
 
   /* ── FADE-UP UTILITY ── */
   .fade-up {
@@ -463,6 +480,7 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
     section, .hero, .cta-section, .author-section, footer { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { white-space: normal; font-size: clamp(24px, 7.7vw, 47px); }
     .intro-split, .before-after, .shifts-grid, .constants-row { grid-template-columns: 1fr; }
     .vignette { grid-template-columns: 1fr; }
     .vignette-body { border-radius: 0 0 12px 12px; border-left: 1px solid var(--border); border-top: none; }
@@ -492,8 +510,9 @@
 <header class="hero" id="top">
   <p class="hero-series">AI Fluency Series</p>
   <h1>The Future of Work<br>for <em>Product Managers</em></h1>
-  <p class="hero-sub">How AI is reshaping the work — and the opportunity — ahead. A guide for product managers and leaders thinking clearly about what comes next.</p>
+  <p class="hero-sub">How AI is reshaping the work and the opportunity ahead. A guide for product managers and leaders thinking clearly about what comes next.</p>
   <p class="hero-author">By Adrian Chiu</p>
+  <p class="hero-doc-ref">This page is an interactive overview of <a href="#document-link"><em>The Future of Work for Product Managers</em></a>, a more in-depth document intended for product managers and leaders who want a fuller picture of where this work is heading.</p>
   <div class="hero-scroll" aria-hidden="true">
     <div class="hero-scroll-line"></div>
     scroll to explore
@@ -516,18 +535,18 @@
   <section id="intro-section" aria-labelledby="intro-heading">
     <p class="section-eyebrow fade-up">What this is really about</p>
     <h2 class="section-title fade-up" id="intro-heading">Most of your week isn't the work you got into this for.</h2>
-    <p class="section-lead fade-up">A significant share of what fills a product manager's week is structural — keeping things moving, not deciding what's right. As AI takes on that layer, what comes into focus is exactly what drew most of us to this work in the first place.</p>
+    <p class="section-lead fade-up">A significant share of what fills a product manager's week is structural: keeping things moving, not deciding what's right. As AI takes on that layer, what comes into focus is exactly what drew most of us to this work in the first place.</p>
 
     <div class="intro-split fade-up" role="region" aria-label="Before and after comparison">
       <div class="intro-col-left">
-        <p class="col-label col-label-dark">Today — structural overhead</p>
+        <p class="col-label col-label-dark">Today: structural overhead</p>
         <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Writing tickets so engineering has what it needs</div>
         <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Driving alignment across stakeholders</div>
         <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Synthesizing a week of notes into a document</div>
         <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Chasing status updates across the team</div>
       </div>
       <div class="intro-col-right">
-        <p class="col-label col-label-light">With AI — the work you love</p>
+        <p class="col-label col-label-light">With AI: the work you love</p>
         <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Deep thinking about what users actually need</div>
         <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Sharp problem definition and prioritization</div>
         <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>High-quality decisions with genuine reasoning</div>
@@ -541,8 +560,8 @@
   <!-- VIGNETTES INTRO -->
   <section id="vignettes-section" aria-labelledby="vignettes-heading" style="padding-bottom: 20px;">
     <p class="section-eyebrow fade-up">Four stages where everything changes</p>
-    <h2 class="section-title fade-up" id="vignettes-heading">A PM's work — reimagined</h2>
-    <p class="section-lead fade-up">Abstract descriptions of change are easy to read past. Here's what each stage of the work actually feels like when AI is part of how it gets done.</p>
+    <h2 class="section-title fade-up" id="vignettes-heading">A PM's work, reimagined</h2>
+    <p class="section-lead fade-up">Here is what product work actually looks like at each stage when AI is part of how it gets done. Not what changes in theory, but what changes in practice.</p>
   </section>
 
   <!-- VIGNETTES -->
@@ -563,7 +582,7 @@
           <div class="ba-col ba-before">
             <p class="ba-label">Without AI</p>
             <div class="ba-item"><div class="ba-tick ba-tick-before" aria-hidden="true">–</div>Schedule three separate conversations</div>
-            <div class="ba-item"><div class="ba-tick ba-tick-before" aria-hidden="true">–</div>Wait on engineering to investigate data</div>
+            <div class="ba-item"><div class="ba-tick ba-tick-before" aria-hidden="true">–</div>Wait for data to be pulled and investigated</div>
             <div class="ba-item"><div class="ba-tick ba-tick-before" aria-hidden="true">–</div>Move forward on a thin foundation</div>
             <div class="ba-item"><div class="ba-tick ba-tick-before" aria-hidden="true">–</div>Rely on instinct to fill the gaps</div>
           </div>
@@ -576,7 +595,7 @@
           </div>
         </div>
         <blockquote class="vignette-pullquote">
-          "One of those alternatives turns out to be a dead end. The other reframes the problem in a way that changes which solution you'd prioritize."
+          When you can surface patterns, test alternative explanations, and see where your evidence is thin before you start building, you stop making decisions on a thin foundation. You arrive at discovery with a problem statement you can actually defend.
         </blockquote>
       </div>
     </article>
@@ -609,7 +628,7 @@
           </div>
         </div>
         <blockquote class="vignette-pullquote">
-          "By the time you're ready to build, the experiment is already designed and the team is aligned on what success looks like."
+          When requirements draft themselves in real time and experiment design is built in from the start, you show up to build already aligned on what success looks like rather than still trying to get there.
         </blockquote>
       </div>
     </article>
@@ -642,7 +661,7 @@
           </div>
         </div>
         <blockquote class="vignette-pullquote">
-          "You catch things neither of you would have caught alone — the engineer brings the technical read, you bring the user intent and product context."
+          When reasoning is visible alongside the output, you and your engineer stop reviewing code in a black box and start reviewing intent together. You catch things neither of you would have caught alone.
         </blockquote>
       </div>
     </article>
@@ -675,7 +694,7 @@
           </div>
         </div>
         <blockquote class="vignette-pullquote">
-          "The feedback loop is short enough that each iteration brings you closer to what your users actually need — and you can act on that quickly."
+          When anomalies surface before they spread and iterations cycle in days rather than sprints, shipping stops being the end of the process and becomes the beginning of learning.
         </blockquote>
       </div>
     </article>
@@ -692,7 +711,7 @@
         <div class="shift-card" id="sh1" role="listitem">
           <p class="shift-num">01</p>
           <h3 class="shift-title">The premium on good judgment</h3>
-          <p class="shift-desc">Which problem is worth solving — and which one just feels urgent? When two reasonable options are on the table, which do you choose, and what does your reasoning say about what you believe? AI can inform but cannot answer these questions.</p>
+          <p class="shift-desc">Which problem is worth solving, and which one just feels urgent? When two reasonable options are on the table, which do you choose, and what does your reasoning say about what you believe? AI can inform but cannot answer these questions.</p>
         </div>
         <div class="shift-card" id="sh2" role="listitem">
           <p class="shift-num">02</p>
@@ -707,12 +726,12 @@
         <div class="shift-card" id="sh4" role="listitem">
           <p class="shift-num">04</p>
           <h3 class="shift-title">Speed, iteration, and risk</h3>
-          <p class="shift-desc">Faster delivery cycles remove the natural checkpoints that slower processes gave you for free — time to reconsider an assumption before it became a shipped feature. You have to build that reflection in yourself.</p>
+          <p class="shift-desc">Faster delivery cycles remove the natural checkpoints that slower processes gave you for free: time to reconsider an assumption before it became a shipped feature. You have to build that reflection in yourself.</p>
         </div>
         <div class="shift-card" id="sh5" style="grid-column: 1 / -1;" role="listitem">
           <p class="shift-num">05</p>
           <h3 class="shift-title">Autonomy, accountability, and the governance instinct</h3>
-          <p class="shift-desc">Governance — the decisions about how AI systems are designed, constrained, and monitored within your product — is becoming a core product responsibility rather than a compliance afterthought. An automated workflow that produces a biased outcome, a feature that erodes user trust: these trace back to the people who defined the goals and chose to deploy the system. The instinct to ask "what could go wrong, and for whom?" needs to be present from the beginning of the work.</p>
+          <p class="shift-desc">Governance is becoming a core product responsibility rather than a compliance afterthought. It covers the decisions about how AI systems are designed, constrained, and monitored within your product. Both trace back to the people who defined the goals and chose to deploy the system. The instinct to ask "what could go wrong, and for whom?" needs to be present from the beginning of the work.</p>
         </div>
       </div>
     </div>
@@ -722,29 +741,29 @@
   <section id="constants-section" aria-labelledby="constants-heading">
     <p class="section-eyebrow fade-up">What doesn't change</p>
     <h2 class="section-title fade-up" id="constants-heading">Some things AI simply cannot reach.</h2>
-    <p class="section-lead fade-up">The ability to understand what someone actually needs — not what they say, not what the data suggests — requires being curious about people in a way that depends entirely on human context. That kind of work has always separated good product managers from great ones.</p>
+    <p class="section-lead fade-up">AI can accelerate research, draft requirements, generate code, and surface anomalies. What it cannot do is replace the instincts that have always defined great product management, including genuine curiosity about people, the ability to make a call when the path is unclear, and the trust built through how you show up for the people around you.</p>
     <div class="constants-row">
       <div class="constant-card" id="c1">
         <div class="constant-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#11518A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A5080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
           </svg>
         </div>
         <h3 class="constant-title">User empathy</h3>
-        <p class="constant-desc">Understanding what someone actually needs — not what they say they need, not what the data suggests — requires sitting with ambiguity about motivation and behavior. AI doesn't have access to the context this depends on.</p>
+        <p class="constant-desc">Understanding what someone actually needs, not what they say they need or what the data suggests, requires sitting with ambiguity about motivation and behavior. AI doesn't have access to the context this depends on.</p>
       </div>
       <div class="constant-card" id="c2">
         <div class="constant-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#11518A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A5080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
         </div>
         <h3 class="constant-title">Strategic clarity</h3>
-        <p class="constant-desc">Looking at competing priorities and identifying the right direction — absorbing uncertainty and making a call when the path forward isn't obvious. Those moments aren't going anywhere.</p>
+        <p class="constant-desc">Absorbing uncertainty and identifying the right direction when competing priorities pull in different ways. Those moments aren't going anywhere.</p>
       </div>
       <div class="constant-card" id="c3">
         <div class="constant-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#11518A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A5080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
             <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
@@ -760,9 +779,7 @@
   <!-- CTA -->
   <div class="cta-section" id="cta-section">
     <h2 class="cta-title">The work ahead is <em>more interesting</em> than what came before.</h2>
-    <a href="#framework-link" class="cta-framework-link" id="framework-link">
-      Read the AI Fluency Framework for Product Managers →
-    </a>
+    <p class="cta-byline">The overhead that has consumed so much of our time and energy is beginning to lift, and what tends to replace it is a version of this work that is more strategic, more creative, and more directly focused on the things that have always made great product management valuable. Here is where to start.</p>
     <div class="cta-asks" role="list">
       <div class="cta-ask" id="ask1" role="listitem">
         <p class="cta-ask-num">01</p>
@@ -782,25 +799,26 @@
         <p class="cta-ask-num">03</p>
         <div>
           <p class="cta-ask-title">Know where you stand</p>
-          <p class="cta-ask-desc">Take an honest look at your current AI fluency and identify where the gaps are. The <a href="#framework-link" style="color:#7ab3d4;">AI Fluency Framework for Product Managers</a> is designed to help you do exactly that. Use it as a starting point, then make a plan.</p>
+          <p class="cta-ask-desc">Take an honest look at your current AI fluency and identify where the gaps are. The <a href="#framework-link" style="color:#A8D4F0;">AI Fluency Framework for Product Managers</a> is designed to help you do exactly that. Use it as a starting point, then make a plan.</p>
         </div>
       </div>
     </div>
-    <p class="cta-byline">The overhead that has consumed so much of our time and energy is beginning to lift — and what tends to replace it is a version of this work that is more strategic, more creative, and more directly focused on the things that have always made great product management valuable.</p>
+    <div class="cta-buttons">
+      <a href="#document-link" class="cta-btn cta-btn-outline">Read the full document →</a>
+      <a href="#framework-link" class="cta-btn cta-btn-solid" id="framework-link">Explore the AI Fluency Framework →</a>
+    </div>
   </div>
 
   <!-- AUTHOR BIO -->
   <section class="author-section" id="author-bio" aria-labelledby="author-heading">
     <div class="author-inner">
-      <div class="author-avatar" aria-hidden="true">
-        <span class="author-avatar-initials">AC</span>
+      <div class="author-avatar">
+        <img src="data:image/jpeg;base64,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" alt="Adrian Chiu">
       </div>
       <div>
         <p class="author-label">About the author</p>
         <h2 class="author-name" id="author-heading">Adrian Chiu</h2>
-        <p class="author-bio">Adrian Chiu is a product executive with over 25 years of experience across media and technology, with deep expertise in advertising technology, streaming, usability, experimentation, and monetization. He has held leadership roles at Paramount, Hulu, Microsoft, and aQuantive, where he has built and scaled products that power large, global digital businesses.</p>
-        <br>
-        <p class="author-bio">Adrian cares deeply about product management and the people who do this work. He is a builder at heart, drawn to turning ideas into real, working systems, and to helping product managers grow into thoughtful, high-ownership leaders.</p>
+        <p class="author-bio">Adrian Chiu is a product executive with over 25 years of experience across media and technology, with deep expertise in advertising technology, streaming, usability, experimentation, and monetization. He has held leadership roles at Paramount, Hulu, Microsoft, and aQuantive, where he has built and scaled products that power large, global digital businesses. He cares deeply about product management and the people who do this work, and is a builder at heart, drawn to turning ideas into real, working systems, and to helping product managers grow into thoughtful, high-ownership leaders.</p>
       </div>
     </div>
   </section>
