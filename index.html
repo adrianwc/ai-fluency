@@ -499,6 +499,34 @@
     }
   }
 </style>
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS — replace placeholder IDs before publishing
+       GA4 Measurement ID  → G-56ZT9PQPX6
+       Clarity Project ID  → wlpkye7wf6
+  ══════════════════════════════════════════════ -->
+
+  <!-- Google tag (gtag.js) — GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56ZT9PQPX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-56ZT9PQPX6', {
+      page_title: 'Future of Work for PMs — Interactive Overview',
+      page_location: window.location.href
+    });
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","wlpkye7wf6");
+  </script>
+
 </head>
 <body>
 
@@ -512,7 +540,7 @@
   <h1>The Future of Work<br>for <em>Product Managers</em></h1>
   <p class="hero-sub">How AI is reshaping the work and the opportunity ahead. A guide for product managers and leaders thinking clearly about what comes next.</p>
   <p class="hero-author">By Adrian Chiu</p>
-  <p class="hero-doc-ref">This page is an interactive overview of <a href="#document-link"><em>The Future of Work for Product Managers</em></a>, a more in-depth document intended for product managers and leaders who want a fuller picture of where this work is heading.</p>
+  <p class="hero-doc-ref">This page is an interactive overview of <a href="future_of_work_pm.html"><em>The Future of Work for Product Managers</em></a>, a more in-depth document intended for product managers and leaders who want a fuller picture of where this work is heading.</p>
   <div class="hero-scroll" aria-hidden="true">
     <div class="hero-scroll-line"></div>
     scroll to explore
@@ -804,7 +832,7 @@
       </div>
     </div>
     <div class="cta-buttons">
-      <a href="#document-link" class="cta-btn cta-btn-outline">Read the full document →</a>
+      <a href="future_of_work_pm.html" class="cta-btn cta-btn-outline">Read the full document →</a>
       <a href="#framework-link" class="cta-btn cta-btn-solid" id="framework-link">Explore the AI Fluency Framework →</a>
     </div>
   </div>
@@ -832,21 +860,91 @@
 </footer>
 
 <script>
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function track(eventName, params) {
+    if (typeof gtag === 'function') gtag('event', eventName, params);
+  }
+
   function navTo(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Reading progress
+  // ── Reading progress bar ─────────────────────────────────────────────────
   const prog = document.getElementById('readingProgress');
+
+  // ── Scroll depth tracking ────────────────────────────────────────────────
+  // Fires once each at 25 / 50 / 75 / 90 / 100 %
+  const depthsFired = new Set();
+  const depthMilestones = [25, 50, 75, 90, 100];
+
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+
+    // Reading progress bar update
     prog.style.width = pct + '%';
     prog.setAttribute('aria-valuenow', Math.round(pct));
+
+    // Depth events
+    depthMilestones.forEach(milestone => {
+      if (!depthsFired.has(milestone) && pct >= milestone) {
+        depthsFired.add(milestone);
+        track('scroll_depth', {
+          page: 'interactive_overview',
+          percent: milestone
+        });
+      }
+    });
   }, { passive: true });
 
-  // Fade-in on scroll
+  // ── Time-on-page (engaged reading) ───────────────────────────────────────
+  // Fires at 30 s, 1 min, 3 min, 5 min of active time on page
+  const timeMilestones = [30, 60, 180, 300];
+  timeMilestones.forEach(seconds => {
+    setTimeout(() => {
+      if (!document.hidden) {
+        track('engaged_reading', {
+          page: 'interactive_overview',
+          seconds_on_page: seconds
+        });
+      }
+    }, seconds * 1000);
+  });
+
+  // ── Conversion: click "Read the full document" ───────────────────────────
+  // Tracks both the inline hero link AND the CTA button
+  document.querySelectorAll('a[href="future_of_work_pm.html"]').forEach(link => {
+    link.addEventListener('click', () => {
+      track('read_full_doc_click', {
+        page: 'interactive_overview',
+        link_text: link.textContent.trim(),
+        link_location: link.classList.contains('cta-btn') ? 'cta_section' : 'hero_text'
+      });
+    });
+  });
+
+  // ── Conversion: click "Explore the AI Fluency Framework" ─────────────────
+  document.querySelectorAll('a[href="ai_fluency_framework.html"], a[href="#framework-link"]').forEach(link => {
+    link.addEventListener('click', () => {
+      track('framework_link_click', {
+        page: 'interactive_overview',
+        link_location: link.classList.contains('cta-btn') ? 'cta_section' : 'body'
+      });
+    });
+  });
+
+  // ── Section navigation clicks ─────────────────────────────────────────────
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      track('section_nav_click', {
+        page: 'interactive_overview',
+        section: btn.dataset.section
+      });
+    });
+  });
+
+  // ── Fade-in on scroll ────────────────────────────────────────────────────
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
@@ -858,7 +956,7 @@
     obs.observe(el);
   });
 
-  // Active nav on scroll
+  // ── Active nav on scroll ──────────────────────────────────────────────────
   const sectionMap = {
     'intro-section': 'intro', 'vignettes-section': 'vignettes',
     'shifts-section': 'shifts', 'constants-section': 'constants', 'cta-section': 'cta'
