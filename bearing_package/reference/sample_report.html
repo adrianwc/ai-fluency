@@ -1,0 +1,1648 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fluency Assessment - Sample Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:       #1B2A4A;
+    --navy-mid:   #2C3E6B;
+    --applied:    #1A72D8;
+    --applied-l:  #E6EFFC;
+    --teal:       #0D7A6E;
+    --teal-l:     #E6F4F2;
+    --amber:      #C8730A;
+    --amber-l:    #FEF3E2;
+    --green:      #1A6B3C;
+    --green-l:    #E8F5EE;
+    --slate:      #4A5568;
+    --muted:      #718096;
+    --border:     #D1D9E0;
+    --bg:         #F8F9FB;
+    --white:      #FFFFFF;
+    --navy-l:     #EEF1F8;
+    /* Domain accent colors — from AI Fluency Framework */
+    --d1:         #3EC9A0;
+    --d2:         #8B84F5;
+    --d3:         #E8A020;
+    --d4:         #E0527E;
+    --d5:         #3898D8;
+    --d6:         #5FA82A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--slate);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── Page shell ── */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: 0 4px 40px rgba(27,42,74,.10);
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: var(--navy);
+    padding: 12px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar-left { color: rgba(255,255,255,.55); font-size: 12px; letter-spacing: .04em; }
+  .topbar-right { color: rgba(255,255,255,.55); font-size: 12px; }
+
+  /* ── Cover ── */
+  .cover {
+    background: var(--navy);
+    padding: 56px 40px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(13,122,110,.18);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 120px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(200,115,10,.10);
+  }
+  .cover-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: .14em;
+    color: var(--teal); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; font-weight: 700;
+    color: var(--white); line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  .cover-meta {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-top: 1px solid rgba(255,255,255,.12);
+    padding-top: 24px; position: relative; z-index: 1;
+  }
+  .cover-meta-block { padding: 0 24px 0 0; }
+  .cover-meta-block + .cover-meta-block { border-left: 1px solid rgba(255,255,255,.12); padding: 0 0 0 24px; }
+  .cover-label { font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .cover-name { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--white); margin-bottom: 4px; }
+  .cover-sub { font-size: 14px; color: rgba(255,255,255,.65); }
+  .cover-detail { font-size: 14px; color: rgba(255,255,255,.65); margin-bottom: 4px; }
+  .cover-detail span { color: rgba(255,255,255,.9); font-weight: 500; }
+
+  /* ── Content wrapper ── */
+  .content { padding: 0 40px 60px; }
+
+  /* ── Section headers ── */
+  .section {
+    margin-top: 52px;
+  }
+  .section-num {
+    font-size: 11px; font-weight: 600; letter-spacing: .12em;
+    color: var(--teal); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; color: var(--navy);
+    border-bottom: 2px solid var(--teal);
+    padding-bottom: 10px; margin-bottom: 20px;
+  }
+
+  .sub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: var(--navy);
+    margin: 28px 0 10px;
+  }
+
+  p { margin-bottom: 12px; color: var(--slate); }
+
+  /* ── Callout box ── */
+  .callout {
+    border-left: 4px solid var(--teal);
+    background: var(--teal-l);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .callout.amber { border-color: var(--amber); background: var(--amber-l); }
+  .callout.green  { border-color: var(--green); background: var(--green-l); }
+  .callout.navy  { border-color: var(--navy); background: var(--navy-l); }
+  .callout-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 5px;
+  }
+  .callout.amber .callout-label { color: var(--amber); }
+  .callout.green  .callout-label { color: var(--green); }
+  .callout.navy  .callout-label { color: var(--navy); }
+  .callout p { margin: 0; font-size: 14px; }
+
+  /* ── Legend cards ── */
+  .legend-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; margin: 16px 0 24px;
+  }
+  .legend-card {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .legend-card-header {
+    padding: 10px 14px;
+    font-size: 12px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--white);
+  }
+  .legend-card-header.foundational { background: var(--amber); }
+  .legend-card-header.applied      { background: var(--applied); }
+  .legend-card-header.advanced     { background: var(--teal); }
+  .legend-card-body {
+    padding: 12px 14px; font-size: 13px; line-height: 1.55;
+    color: var(--slate); background: var(--white);
+  }
+  .legend-card-body strong { color: var(--navy); display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+
+  /* ── Score cards ── */
+  .score-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 16px 0 24px;
+  }
+  .score-card {
+    border-radius: 8px; border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .score-card-top {
+    padding: 10px 18px 8px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--slate); border-bottom: 3px solid var(--border);
+  }
+  .score-card-top.navy-dim  { background: var(--navy-l); border-bottom-color: var(--navy); }
+  .score-card-top.amber-dim { background: var(--amber-l); border-bottom-color: var(--amber); }
+  .score-card-level {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700;
+    padding: 10px 18px 0;
+  }
+  .score-card-level.level-advanced     { color: var(--teal); }
+  .score-card-level.level-applied      { color: var(--applied); }
+  .score-card-level.level-foundational { color: var(--amber); }
+  .score-card-desc { padding: 8px 18px 18px; font-size: 13.5px; line-height: 1.55; color: var(--slate); }
+
+  /* ── Hexagon radar chart ── */
+  .chart-wrap {
+    display: flex; justify-content: center;
+    margin: 24px 0 8px;
+  }
+
+  /* ── Domain summary table ── */
+  .domain-table {
+    width: 100%; border-collapse: collapse;
+    margin: 16px 0; font-size: 14px;
+  }
+  .domain-table th {
+    background: var(--navy); color: var(--white);
+    padding: 10px 14px; text-align: left;
+    font-weight: 600; font-size: 12px; letter-spacing: .04em;
+  }
+  .domain-table th.teal-h { background: var(--teal); }
+  .domain-table td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .domain-table tr:last-child td { border-bottom: none; }
+  .domain-table tr:nth-child(even) td { background: var(--bg); }
+  .domain-name { font-weight: 600; color: var(--navy); font-size: 14px; margin-bottom: 2px; }
+  .domain-desc { font-size: 12.5px; color: var(--muted); font-style: italic; }
+  .badge {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    text-align: center; min-width: 96px;
+  }
+  .badge.advanced     { background: var(--teal-l); color: var(--teal); }
+  .badge.applied      { background: var(--applied-l); color: var(--applied); }
+  .badge.foundational { background: var(--amber-l); color: var(--amber); }
+  .badge.gap-yes { background: var(--amber-l); color: var(--amber); }
+  .badge.gap-no  { background: var(--green-l);  color: var(--green); }
+
+  /* ── Domain detail blocks ── */
+  .domain-block {
+    margin: 28px 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .domain-block-header {
+    background: var(--navy-l);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .domain-block-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--navy); }
+  .domain-block-subdesc { font-size: 12.5px; color: var(--muted); font-style: italic; margin-top: 2px; }
+  .dim-score { text-align: center; min-width: 100px; }
+  .dim-score-label { font-size: 11px; color: var(--muted); letter-spacing: .04em; margin-bottom: 3px; }
+  .dim-score-val { font-size: 14px; font-weight: 700; }
+  .dim-score-val.teal-val,
+  .dim-score-val.level-advanced     { color: var(--teal); }
+  .dim-score-val.navy-val,
+  .dim-score-val.level-applied      { color: var(--applied); }
+  .dim-score-val.amber-val,
+  .dim-score-val.level-foundational { color: var(--amber); }
+  .domain-block-body { padding: 18px 20px; }
+  .domain-insight { font-size: 14px; color: var(--slate); margin-bottom: 18px; line-height: 1.65; }
+
+  /* ── Domain accent color — top border stripe per domain ── */
+  .domain-block.d1 { border-top: 4px solid var(--d1); }
+  .domain-block.d2 { border-top: 4px solid var(--d2); }
+  .domain-block.d3 { border-top: 4px solid var(--d3); }
+  .domain-block.d4 { border-top: 4px solid var(--d4); }
+  .domain-block.d5 { border-top: 4px solid var(--d5); }
+  .domain-block.d6 { border-top: 4px solid var(--d6); }
+
+  /* ── Skill rows ── */
+  .skill-row {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-info { margin-bottom: 8px; }
+  .skill-name { font-weight: 600; color: var(--navy); font-size: 14px; margin-bottom: 2px; }
+  .skill-desc { font-size: 12.5px; color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  /* dual-track layout inside skill rows */
+  .skill-track-wrap { display: flex; gap: 16px; }
+  .skill-track { flex: 1; }
+  .track-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; color: var(--slate); }
+  .track-bar { display: flex; align-items: center; position: relative; height: 22px; }
+  .track-segment { flex: 1; height: 6px; background: var(--border); }
+  .track-segment:first-child { border-radius: 3px 0 0 3px; }
+  .track-segment:last-child  { border-radius: 0 3px 3px 0; }
+  .track-marker {
+    position: absolute; top: 50%;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid var(--white); z-index: 2;
+  }
+  .track-marker.found { left: 0;   transform: translateY(-50%); }
+  .track-marker.appl  { left: 50%; transform: translate(-50%, -50%); }
+  .track-marker.adv   { right: 0;  left: auto; transform: translateY(-50%); }
+  .track-labels-row { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ── Seniority table ── */
+  .seniority-table {
+    width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0;
+  }
+  .seniority-table th {
+    padding: 10px 14px; text-align: center;
+    font-size: 12px; font-weight: 600; letter-spacing: .04em;
+    border-bottom: 2px solid var(--border);
+  }
+  .seniority-table th:first-child { text-align: left; }
+  .seniority-table td {
+    padding: 9px 14px; border-bottom: 1px solid var(--border);
+  }
+  .seniority-table tr:last-child td { border-bottom: none; }
+  .seniority-table tr:nth-child(even) td { background: var(--bg); }
+  /* Domain group header rows — must override the stripe rule */
+  .seniority-table tr.domain-group-row td,
+  .seniority-table tr.domain-group-row:nth-child(even) td {
+    background: var(--navy) !important;
+    color: #fff;
+    font-size: 11.5px; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase;
+    padding: 7px 14px;
+    border-bottom: none;
+  }
+  .calib-dot-wrap { display: flex; justify-content: center; }
+  .calib-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border); background: var(--white);
+  }
+  .calib-dot.filled-amber { background: var(--amber); border-color: var(--amber); }
+  .calib-dot.filled-navy  { background: var(--applied);  border-color: var(--applied); }
+  .calib-dot.filled-green { background: var(--green); border-color: var(--green); }
+
+  /* ── Seniority table domain group row — per-domain accent colors ── */
+  .seniority-table tr.domain-group-row.d1 td,
+  .seniority-table tr.domain-group-row.d1:nth-child(even) td { background: var(--d1) !important; color: var(--navy); }
+  .seniority-table tr.domain-group-row.d2 td,
+  .seniority-table tr.domain-group-row.d2:nth-child(even) td { background: var(--d2) !important; color: var(--navy); }
+  .seniority-table tr.domain-group-row.d3 td,
+  .seniority-table tr.domain-group-row.d3:nth-child(even) td { background: var(--d3) !important; color: var(--navy); }
+  .seniority-table tr.domain-group-row.d4 td,
+  .seniority-table tr.domain-group-row.d4:nth-child(even) td { background: var(--d4) !important; color: #fff; }
+  .seniority-table tr.domain-group-row.d5 td,
+  .seniority-table tr.domain-group-row.d5:nth-child(even) td { background: var(--d5) !important; color: #fff; }
+  .seniority-table tr.domain-group-row.d6 td,
+  .seniority-table tr.domain-group-row.d6:nth-child(even) td { background: var(--d6) !important; color: #fff; }
+
+  /* ── Roadmap tiers ── */
+  .tier {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .tier-header {
+    padding: 12px 20px;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .tier-header.t1 { background: var(--teal); }
+  .tier-header.t2 { background: var(--amber); }
+  .tier-header.t3 { background: var(--navy); }
+  .tier-name { font-weight: 700; color: var(--white); font-size: 15px; }
+  .tier-time { color: rgba(255,255,255,.7); font-size: 13px; font-style: italic; }
+  .tier-body { padding: 16px 20px; background: var(--white); }
+  .tier-body ul { padding-left: 20px; }
+  .tier-body li { margin-bottom: 18px; font-size: 14px; line-height: 1.6; }
+  .tier-body li:last-child { margin-bottom: 0; }
+  .roadmap-item-title { display: block; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .roadmap-item-detail { display: block; font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+  .roadmap-dep {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 10px;
+    background: #EEF2F7; color: #374151; border: 1px solid #C9D3DC;
+    vertical-align: middle; margin-left: 8px; font-style: normal;
+  }
+
+  /* ── Recommendation caveat ── */
+  .rec-caveat {
+    background: #EEF2F7; border: 1px solid #B8C4D0;
+    border-left: 4px solid var(--navy); border-radius: 8px;
+    padding: 14px 18px; font-size: 13.5px; color: var(--muted);
+    line-height: 1.65; margin-bottom: 24px;
+  }
+  .rec-caveat strong { color: var(--text); }
+
+  /* ── Next actions ── */
+  .action-list { margin: 16px 0; }
+  .action-item {
+    display: grid; grid-template-columns: 40px 1fr;
+    gap: 0; margin-bottom: 10px; border-radius: 8px;
+    overflow: hidden; border: 1px solid var(--border);
+  }
+  .action-num {
+    background: var(--teal); color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+  }
+  .action-text {
+    padding: 14px 16px; font-size: 14px; line-height: 1.6; background: var(--white);
+  }
+  .action-title { font-weight: 600; color: var(--text); margin-bottom: 5px; font-size: 14px; }
+  .action-detail { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+  .action-text strong { color: var(--navy); }
+
+  /* ── Closing quote ── */
+  .closing {
+    text-align: center; padding: 40px 40px 0;
+    border-top: 2px solid var(--teal); margin-top: 48px;
+  }
+  .closing-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-style: italic;
+    color: var(--navy); line-height: 1.5; margin-bottom: 8px;
+  }
+  .closing-sub { font-size: 14px; color: var(--muted); }
+
+  /* ── Footer ── */
+  .footer {
+    background: var(--navy); color: rgba(255,255,255,.4);
+    font-size: 12px; padding: 14px 40px;
+    display: flex; justify-content: space-between;
+    margin-top: 40px;
+  }
+
+  /* ── Strength block ── */
+  .strength-block {
+    border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; margin-bottom: 20px;
+  }
+  .strength-header {
+    background: var(--green-l); border-bottom: 1px solid var(--border);
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .strength-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0;
+  }
+  .strength-title { font-weight: 600; color: var(--navy); font-size: 15px; }
+  .strength-scores { display: flex; gap: 8px; margin-left: auto; }
+  .strength-score-pill {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 4px 10px; border-radius: 6px; min-width: 76px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .strength-score-pill.eff { }
+  .strength-score-pill.opp { }
+  .strength-score-pill-label { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 2px; }
+  .strength-score-pill-val { font-size: 12.5px; font-weight: 700; color: var(--slate); }
+  .strength-score-pill-val.level-advanced     { color: var(--teal); }
+  .strength-score-pill-val.level-applied      { color: var(--applied); }
+  .strength-score-pill-val.level-foundational { color: var(--amber); }
+  .strength-body { padding: 14px 18px 10px; font-size: 14px; line-height: 1.65; }
+  .strength-why {
+    padding: 0 18px 12px; font-size: 13.5px; color: var(--muted); line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+  }
+  .strength-why strong { color: var(--slate); }
+  .strength-action {
+    padding: 12px 18px; background: var(--bg);
+    font-size: 13px; color: var(--slate); line-height: 1.55;
+  }
+  .strength-action strong { color: var(--green); }
+
+  /* ── Sample watermark ── */
+  .watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-35deg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(72px, 12vw, 130px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(27, 42, 74, 0.055);
+    pointer-events: none;
+    user-select: none;
+    z-index: 9999;
+    white-space: nowrap;
+  }
+
+  /* ── Sample badge in cover ── */
+  .sample-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 4px;
+    padding: 5px 12px 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 18px;
+  }
+  .sample-badge::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #E8A020;
+    flex-shrink: 0;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 680px) {
+    .page { box-shadow: none; }
+
+    /* Topbar: hide right label, keep left */
+    .topbar { padding: 10px 20px; flex-direction: column; align-items: flex-start; gap: 2px; }
+    .topbar-right { display: none; }
+
+    /* Cover */
+    .cover { padding: 36px 20px 32px; }
+    .cover-title { font-size: clamp(32px, 9vw, 48px); }
+    .cover-meta { grid-template-columns: 1fr; gap: 16px; }
+    .cover-meta-block + .cover-meta-block { border-left: none; border-top: 1px solid rgba(255,255,255,.12); padding: 16px 0 0; }
+
+    /* Content */
+    .content { padding: 0 20px 48px; }
+    .closing  { padding: 32px 20px 0; }
+
+    /* Legend: stack to 1 column */
+    .legend-grid { grid-template-columns: 1fr; }
+
+    /* Score cards: stack to 1 column */
+    .score-grid { grid-template-columns: 1fr; }
+
+    /* Domain tables: horizontal scroll */
+    .domain-table, .seniority-table {
+      display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      font-size: 13px;
+    }
+
+    /* Domain block header: stack score badges below title */
+    .domain-block-header { grid-template-columns: 1fr; gap: 8px; }
+    .dim-score { text-align: left; min-width: unset; }
+
+    /* Skill tracks: stack to column */
+    .skill-track-wrap { flex-direction: column; gap: 12px; }
+
+    /* Strength header: wrap score pills below title */
+    .strength-header { flex-wrap: wrap; }
+    .strength-scores { margin-left: 0; width: 100%; }
+
+    /* Action items */
+    .action-item { grid-template-columns: 32px 1fr; }
+    .action-num { font-size: 15px; }
+
+    /* Footer */
+    .footer { flex-direction: column; gap: 4px; padding: 14px 20px; }
+  }
+
+  /* print */
+  @media print {
+    body { background: white; }
+    .page { box-shadow: none; }
+    .watermark { color: rgba(27,42,74,0.08); }
+  }
+</style>
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS
+       GA4 Measurement ID  → G-56ZT9PQPX6
+       Clarity Project ID  → wlpkye7wf6
+  ══════════════════════════════════════════════ -->
+
+  <!-- Google tag (gtag.js) — GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56ZT9PQPX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-56ZT9PQPX6', {
+      page_title: 'AI Fluency Assessment - Sample Report',
+      page_location: window.location.href
+    });
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","wlpkye7wf6");
+  </script>
+
+</head>
+<body>
+<div class="watermark">Sample Report</div>
+<div class="page">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-left">AI FLUENCY ASSESSMENT REPORT &nbsp;·&nbsp; BEARING AGENT 1.4</span>
+    <span class="topbar-right">Confidential — Individual Use Only</span>
+  </div>
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="sample-badge">Sample Report</div>
+    <div class="cover-eyebrow">Individual Assessment Report</div>
+    <div class="cover-title">AI Fluency<br>Report</div>
+    <div class="cover-meta">
+      <div class="cover-meta-block">
+        <div class="cover-label">Prepared for</div>
+        <div class="cover-name">Maya Chen</div>
+        <div class="cover-sub">Senior Product Manager</div>
+        <div class="cover-sub">Growth &amp; Monetization</div>
+      </div>
+      <div class="cover-meta-block">
+        <div class="cover-label">Assessment details</div>
+        <div class="cover-detail"><span>Date</span> &nbsp; May 2026</div>
+        <div class="cover-detail"><span>Seniority</span> &nbsp; Senior PM (8 years)</div>
+        <div class="cover-detail"><span>Framework</span> &nbsp; AI Fluency Framework for Product Managers v1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ CONTENT ═══════════════════════════ -->
+  <div class="content">
+
+    <!-- ── SECTION 1 — SNAPSHOT ── -->
+    <div class="section">
+      <div class="section-num">Section 01</div>
+      <div class="section-title">Your AI Fluency Snapshot</div>
+
+      <!-- Legend -->
+      <div class="sub-title">How levels are defined</div>
+      <p>Every skill is scored on the same three-level scale, independently for Efficiency AI and Opportunity AI. Use this as a reference throughout the report.</p>
+      <div class="legend-grid">
+        <div class="legend-card">
+          <div class="legend-card-header foundational">Foundational</div>
+          <div class="legend-card-body">
+            <strong>Efficiency AI</strong>You reach for AI on obvious-fit tasks, but use is occasional and reactive rather than habitual.
+            <br><br><strong>Opportunity AI</strong>You have begun asking what AI makes possible — experiments are rough but intuition is building.
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-card-header applied">Applied</div>
+          <div class="legend-card-body">
+            <strong>Efficiency AI</strong>AI is a consistent part of how you work. You prompt with intention and it would feel like a step backward to work without it.
+            <br><br><strong>Opportunity AI</strong>You regularly use AI to do things that would be impossible without it — not just faster.
+          </div>
+        </div>
+        <div class="legend-card">
+          <div class="legend-card-header advanced">Advanced</div>
+          <div class="legend-card-body">
+            <strong>Efficiency AI</strong>Agents handle substantial work asynchronously. Your habits and workflows are a model others follow.
+            <br><br><strong>Opportunity AI</strong>You consistently find and act on ways AI expands what your team is capable of, beyond what already exists.
+          </div>
+        </div>
+      </div>
+
+      <!-- Score cards -->
+      <div class="sub-title">Your overall scores</div>
+      <div class="score-grid">
+        <div class="score-card">
+          <div class="score-card-top navy-dim">Efficiency AI</div>
+          <div class="score-card-level level-applied">Applied</div>
+          <div class="score-card-desc">Your Efficiency AI profile shows consistent, intentional use of AI across your core product work. You have developed real habits where AI is embedded in how you run research, prepare for stakeholder conversations, and structure your thinking. The work would feel slower without it.</div>
+        </div>
+        <div class="score-card">
+          <div class="score-card-top amber-dim">Opportunity AI</div>
+          <div class="score-card-level level-applied">Applied</div>
+          <div class="score-card-desc">You are beginning to use AI to unlock work that was not previously feasible, particularly in research synthesis and vision storytelling. The opportunity dimension is growing, though it remains strongest in the domains where you already have deep expertise.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">Overall Profile</div>
+        <p>You are performing at an Applied level overall, with Domain 3 — Strategic Judgment — standing out as your strongest domain across both dimensions. Vision Articulation is Advanced on both Efficiency and Opportunity AI, which is a meaningful differentiator at the Senior PM level and the foundation for principal-level scope. The two clearest gaps in your profile are Efficiency AI in Domain 4 (Discovery and Research) and Opportunity AI in Domain 2 (Data Fluency). On the research side, you have meaningfully changed how you approach discovery — but your core research workflow is not yet systematically AI-powered. On the data side, your fluency serves your own decisions well but has not yet translated into designing how your product measures and learns. The sections below break down your profile by domain and lay out a sequenced roadmap for where to focus next.</p>
+      </div>
+
+      <!-- Hexagon radar chart -->
+      <div class="sub-title">Fluency profile across all six domains</div>
+      <p>The chart below shows your Efficiency AI and Opportunity AI profile across all six domains.</p>
+
+      <div class="chart-wrap" style="align-items:center; gap:0;">
+        <!-- Hexagon chart — center shifted left to leave room for legend -->
+        <svg width="780" height="460" viewBox="0 0 780 460" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ── Hexagon grid (center = 250, 228) ── -->
+          <g transform="translate(250,228) rotate(-30)">
+
+            <!-- r=140 Advanced ring -->
+            <polygon points="0,-140 121.2,-70 121.2,70 0,140 -121.2,70 -121.2,-70"
+              fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+            <!-- r=93 Applied ring -->
+            <polygon points="0,-93 80.6,-46.5 80.6,46.5 0,93 -80.6,46.5 -80.6,-46.5"
+              fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+            <!-- r=47 Foundational ring -->
+            <polygon points="0,-47 40.7,-23.5 40.7,23.5 0,47 -40.7,23.5 -40.7,-23.5"
+              fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+
+            <!-- Spokes -->
+            <line x1="0" y1="0" x2="0"      y2="-140" stroke="#D1D9E0" stroke-width="1"/>
+            <line x1="0" y1="0" x2="121.2"  y2="-70"  stroke="#D1D9E0" stroke-width="1"/>
+            <line x1="0" y1="0" x2="121.2"  y2="70"   stroke="#D1D9E0" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0"      y2="140"  stroke="#D1D9E0" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-121.2" y2="70"   stroke="#D1D9E0" stroke-width="1"/>
+            <line x1="0" y1="0" x2="-121.2" y2="-70"  stroke="#D1D9E0" stroke-width="1"/>
+
+            <!-- Efficiency AI polygon -->
+            <polygon
+              points="0,-93  80.6,-46.5  121.2,70  0,47  -80.6,46.5  -40.7,-23.5"
+              fill="#1B2A4A" fill-opacity="0.12"
+              stroke="#1B2A4A" stroke-width="2.2" stroke-linejoin="round"/>
+
+            <!-- Opportunity AI polygon (dashed) -->
+            <polygon
+              points="0,-47  40.7,-23.5  121.2,70  0,93  -80.6,46.5  -40.7,-23.5"
+              fill="#0D7A6E" fill-opacity="0.14"
+              stroke="#0D7A6E" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="5 3"/>
+
+            <!-- Efficiency AI dots -->
+            <circle cx="0"     cy="-93"   r="5" fill="#1B2A4A"/>
+            <circle cx="80.6"  cy="-46.5" r="5" fill="#1B2A4A"/>
+            <circle cx="121.2" cy="70"    r="5" fill="#1B2A4A"/>
+            <circle cx="0"     cy="47"    r="5" fill="#1B2A4A"/>
+            <circle cx="-80.6" cy="46.5"  r="5" fill="#1B2A4A"/>
+            <circle cx="-40.7" cy="-23.5" r="5" fill="#1B2A4A"/>
+
+            <!-- Opportunity AI dots -->
+            <circle cx="0"     cy="-47"   r="5" fill="#0D7A6E"/>
+            <circle cx="40.7"  cy="-23.5" r="5" fill="#0D7A6E"/>
+            <circle cx="121.2" cy="70"    r="5" fill="#0D7A6E"/>
+            <circle cx="0"     cy="93"    r="5" fill="#0D7A6E"/>
+            <circle cx="-80.6" cy="46.5"  r="5" fill="#0D7A6E"/>
+            <circle cx="-40.7" cy="-23.5" r="5" fill="#0D7A6E"/>
+
+          </g><!-- /hex group -->
+
+          <!-- ── Domain number labels — each wrapped in <g> for hover tooltip ── -->
+          <!-- Flat-top orientation: rotate(-30) applied to hex group shifts vertices -->
+          <!-- Vertex positions (center 250,228, r=140):
+               D1 top-left (180,107)  D2 top-right (320,107)  D3 right (390,228)
+               D4 bottom-right (320,349)  D5 bottom-left (180,349)  D6 left (110,228)  -->
+
+          <!-- 1 — top-left (Agentic Workflow) -->
+          <g class="domain-badge-group" data-domain="1" style="cursor:pointer">
+            <circle cx="169" cy="88" r="18" fill="transparent"/><!-- hit area -->
+            <circle cx="169" cy="88" r="11" fill="#3EC9A0"/>
+            <text x="169" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#1B2A4A" font-family="DM Sans,sans-serif">1</text>
+            <text x="169" y="70" text-anchor="middle" font-size="11.5" font-weight="600" fill="#3EC9A0" font-family="DM Sans,sans-serif">Agentic Workflow</text>
+          </g>
+
+          <!-- 2 — top-right (Data Fluency) -->
+          <g class="domain-badge-group" data-domain="2" style="cursor:pointer">
+            <circle cx="331" cy="88" r="18" fill="transparent"/>
+            <circle cx="331" cy="88" r="11" fill="#8B84F5"/>
+            <text x="331" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="DM Sans,sans-serif">2</text>
+            <text x="331" y="70" text-anchor="middle" font-size="11.5" font-weight="600" fill="#8B84F5" font-family="DM Sans,sans-serif">Data Fluency</text>
+          </g>
+
+          <!-- 3 — right (Strategic Judgment) -->
+          <g class="domain-badge-group" data-domain="3" style="cursor:pointer">
+            <circle cx="414" cy="228" r="18" fill="transparent"/>
+            <circle cx="414" cy="228" r="11" fill="#E8A020"/>
+            <text x="414" y="233" text-anchor="middle" font-size="12" font-weight="700" fill="#1B2A4A" font-family="DM Sans,sans-serif">3</text>
+            <text x="430" y="222" text-anchor="start" font-size="11.5" font-weight="600" fill="#E8A020" font-family="DM Sans,sans-serif">Strategic</text>
+            <text x="430" y="237" text-anchor="start" font-size="11.5" font-weight="600" fill="#E8A020" font-family="DM Sans,sans-serif">Judgment</text>
+          </g>
+
+          <!-- 4 — bottom-right (Discovery & Research) -->
+          <g class="domain-badge-group" data-domain="4" style="cursor:pointer">
+            <circle cx="331" cy="370" r="18" fill="transparent"/>
+            <circle cx="331" cy="370" r="11" fill="#E0527E"/>
+            <text x="331" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="DM Sans,sans-serif">4</text>
+            <text x="331" y="391" text-anchor="middle" font-size="11.5" font-weight="600" fill="#E0527E" font-family="DM Sans,sans-serif">Discovery &amp;</text>
+            <text x="331" y="405" text-anchor="middle" font-size="11.5" font-weight="600" fill="#E0527E" font-family="DM Sans,sans-serif">Research</text>
+          </g>
+
+          <!-- 5 — bottom-left (Launch & Delivery) -->
+          <g class="domain-badge-group" data-domain="5" style="cursor:pointer">
+            <circle cx="169" cy="370" r="18" fill="transparent"/>
+            <circle cx="169" cy="370" r="11" fill="#3898D8"/>
+            <text x="169" y="375" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="DM Sans,sans-serif">5</text>
+            <text x="169" y="391" text-anchor="middle" font-size="11.5" font-weight="600" fill="#3898D8" font-family="DM Sans,sans-serif">Launch &amp;</text>
+            <text x="169" y="405" text-anchor="middle" font-size="11.5" font-weight="600" fill="#3898D8" font-family="DM Sans,sans-serif">Delivery</text>
+          </g>
+
+          <!-- 6 — left (Org & Ethics) -->
+          <g class="domain-badge-group" data-domain="6" style="cursor:pointer">
+            <circle cx="86" cy="228" r="18" fill="transparent"/>
+            <circle cx="86" cy="228" r="11" fill="#5FA82A"/>
+            <text x="86" y="233" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="DM Sans,sans-serif">6</text>
+            <text x="71" y="222" text-anchor="end" font-size="11.5" font-weight="600" fill="#5FA82A" font-family="DM Sans,sans-serif">Org &amp;</text>
+            <text x="71" y="237" text-anchor="end" font-size="11.5" font-weight="600" fill="#5FA82A" font-family="DM Sans,sans-serif">Ethics</text>
+          </g>
+
+          <!-- ── Legend panel (right side, x=520–770) ── -->
+          <!-- Panel background -->
+          <rect x="512" y="80" width="230" height="296" rx="8"
+            fill="#F8F9FB" stroke="#D1D9E0" stroke-width="1"/>
+
+          <!-- Legend title -->
+          <text x="527" y="106" font-size="11" font-weight="700" fill="#1B2A4A"
+            font-family="DM Sans,sans-serif" letter-spacing="0.06em">HOW TO READ</text>
+
+          <!-- Ring scale: three proper hexagons at each ring size -->
+          <!-- Hex vertices for flat-top hex centered at (548,y), radius r:
+               points at angles 0,60,120,180,240,300 degrees
+               r=11 (Advanced): (548+11,y),(548+5.5,y+9.5),(548-5.5,y+9.5),(548-11,y),(548-5.5,y-9.5),(548+5.5,y-9.5)
+               r=8  (Applied):  scale accordingly
+               r=5  (Found):    scale accordingly  -->
+          <polygon points="559,148 553.5,157.5 542.5,157.5 537,148 542.5,138.5 553.5,138.5"
+            fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+          <text x="568" y="152" font-size="11.5" fill="#1B2A4A" font-family="DM Sans,sans-serif" font-weight="600">Advanced</text>
+          <text x="568" y="166" font-size="10.5" fill="#718096" font-family="DM Sans,sans-serif">Outer ring</text>
+
+          <polygon points="556,195 551.5,202.4 542.5,202.4 538,195 542.5,187.6 551.5,187.6"
+            fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+          <text x="568" y="199" font-size="11.5" fill="#1B2A4A" font-family="DM Sans,sans-serif" font-weight="600">Applied</text>
+          <text x="568" y="213" font-size="10.5" fill="#718096" font-family="DM Sans,sans-serif">Middle ring</text>
+
+          <polygon points="553,242 549.5,248.1 542.5,248.1 539,242 542.5,235.9 549.5,235.9"
+            fill="none" stroke="#D1D9E0" stroke-width="1.5"/>
+          <text x="568" y="246" font-size="11.5" fill="#1B2A4A" font-family="DM Sans,sans-serif" font-weight="600">Foundational</text>
+          <text x="568" y="260" font-size="10.5" fill="#718096" font-family="DM Sans,sans-serif">Inner ring</text>
+
+          <!-- Divider -->
+          <line x1="527" y1="278" x2="732" y2="278" stroke="#D1D9E0" stroke-width="1"/>
+
+          <!-- Series legend -->
+          <text x="527" y="300" font-size="11" font-weight="700" fill="#1B2A4A"
+            font-family="DM Sans,sans-serif" letter-spacing="0.06em">SERIES</text>
+
+          <!-- Efficiency AI swatch: solid navy line + dot -->
+          <line x1="527" y1="320" x2="557" y2="320" stroke="#1B2A4A" stroke-width="2.5"/>
+          <circle cx="542" cy="320" r="4" fill="#1B2A4A"/>
+          <text x="565" y="325" font-size="11.5" fill="#1B2A4A" font-family="DM Sans,sans-serif" font-weight="600">Efficiency AI</text>
+
+          <!-- Opportunity AI swatch: dashed teal line + dot -->
+          <line x1="527" y1="348" x2="557" y2="348" stroke="#0D7A6E" stroke-width="2.5" stroke-dasharray="5 3"/>
+          <circle cx="542" cy="348" r="4" fill="#0D7A6E"/>
+          <text x="565" y="353" font-size="11.5" fill="#0D7A6E" font-family="DM Sans,sans-serif" font-weight="600">Opportunity AI</text>
+
+        </svg>
+      </div>
+
+      <!-- Domain table -->
+      <div class="sub-title">Domain-level summary</div>
+      <p style="margin-bottom:12px;">Each row shows your position on the three-level scale for both dimensions.</p>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th style="width:42%">Domain</th>
+            <th style="min-width:200px">Efficiency AI &amp; Opportunity AI</th>
+          </tr>
+        </thead>
+                <tbody>
+
+          <!-- 1 — Agentic -->
+          <tr>
+            <td style="border-left: 4px solid var(--d1);"><div class="domain-name">1 — Agentic Workflow Direction</div><div class="domain-desc">How the PM directs AI agents as active participants in product development</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- 2 — Data -->
+          <tr>
+            <td style="border-left: 4px solid var(--d2);"><div class="domain-name">2 — Data Fluency &amp; Self-Serve Insight</div><div class="domain-desc">How the PM accesses, interprets, and acts on data independently</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- 3 — Strategic -->
+          <tr>
+            <td style="border-left: 4px solid var(--d3);"><div class="domain-name">3 — Strategic Judgment &amp; Prioritization</div><div class="domain-desc">Higher-order thinking that becomes more critical as AI accelerates delivery</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- 4 — Discovery -->
+          <tr>
+            <td style="border-left: 4px solid var(--d4);"><div class="domain-name">4 — Discovery, Research &amp; Market Intelligence</div><div class="domain-desc">How the PM generates insight about users, markets, and competitors</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- 5 — Launch -->
+          <tr>
+            <td style="border-left: 4px solid var(--d5);"><div class="domain-name">5 — Launch, GTM &amp; High-Velocity Delivery</div><div class="domain-desc">How the PM ships and coordinates launches in a high-velocity environment</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- 6 — Org -->
+          <tr>
+            <td style="border-left: 4px solid var(--d6);"><div class="domain-name">6 — AI Org Leadership &amp; Ethics</div><div class="domain-desc">Organizational design, governance, and ethical responsibility</div></td>
+            <td style="padding:12px 14px;vertical-align:top">
+              <div class="skill-track-wrap">
+                <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+                <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div><!-- /section 1 -->
+
+
+    <!-- ── SECTION 2 — STRENGTHS ── -->
+    <div class="section">
+      <div class="section-num">Section 02</div>
+      <div class="section-title">Strengths Worth Leveraging</div>
+      <p>These are the skills where your assessment shows genuine mastery. Understanding why they matter — and how to put them to work — is as important as knowing where to grow.</p>
+
+      <div class="strength-block">
+        <div class="strength-header">
+          <div class="strength-dot"></div>
+          <div class="strength-title">Insight Synthesis &amp; AI Recommendation Vetting</div>
+          <div class="strength-scores">
+            <div class="strength-score-pill eff"><span class="strength-score-pill-label">Efficiency AI</span><span class="strength-score-pill-val level-advanced">Advanced</span></div>
+            <div class="strength-score-pill opp"><span class="strength-score-pill-label">Opportunity AI</span><span class="strength-score-pill-val level-applied">Applied</span></div>
+          </div>
+        </div>
+        <div class="strength-body">You move from data to decision faster than almost anyone at your level. You critically evaluate AI-generated conclusions, stress-test the reasoning, and arrive at conversations with a point of view already formed.</div>
+        <div class="strength-why"><strong>Why this matters at your level:</strong> At the Senior PM level, decision velocity is a multiplier. A PM who can synthesise quickly and push back on AI recommendations shapes how the whole team uses data, not just their own work.</div>
+        <div class="strength-action"><strong>What to do with this strength:</strong> Lead data reviews for the team. Your ability to synthesise quickly and interrogate AI outputs is something peers can learn from directly.</div>
+      </div>
+
+      <div class="strength-block">
+        <div class="strength-header">
+          <div class="strength-dot"></div>
+          <div class="strength-title">Vision Articulation &amp; Product Storytelling</div>
+          <div class="strength-scores">
+            <div class="strength-score-pill eff"><span class="strength-score-pill-label">Efficiency AI</span><span class="strength-score-pill-val level-advanced">Advanced</span></div>
+            <div class="strength-score-pill opp"><span class="strength-score-pill-label">Opportunity AI</span><span class="strength-score-pill-val level-advanced">Advanced</span></div>
+          </div>
+        </div>
+        <div class="strength-body">Your ability to construct and communicate a compelling product narrative is Advanced on both dimensions — AI has not only made this work faster, it has changed what is possible. You use AI to prepare for leadership conversations, structure business cases, and pressure-test your logic before walking into the room. On the Opportunity side, you have also begun designing experiences where the product narrative itself is adaptive, shaped by real-time signal rather than static positioning.</div>
+        <div class="strength-why"><strong>Why this matters at your level:</strong> Persuasive communication becomes a competitive advantage as scope grows. Senior PMs who can build airtight narratives at speed spend less time in alignment loops and more time driving decisions — and those who use AI to shape the product story, not just present it, operate at a different level entirely.</div>
+        <div class="strength-action"><strong>What to do with this strength:</strong> Apply this to your next major investment case. Build a multi-horizon narrative with AI, use it to anticipate the objections you will face in the room, and document the process so others on the team can replicate it.</div>
+      </div>
+
+      <div class="strength-block">
+        <div class="strength-header">
+          <div class="strength-dot"></div>
+          <div class="strength-title">Cross-System &amp; Stakeholder Alignment at Speed</div>
+          <div class="strength-scores">
+            <div class="strength-score-pill eff"><span class="strength-score-pill-label">Efficiency AI</span><span class="strength-score-pill-val level-advanced">Advanced</span></div>
+            <div class="strength-score-pill opp"><span class="strength-score-pill-label">Opportunity AI</span><span class="strength-score-pill-val level-applied">Applied</span></div>
+          </div>
+        </div>
+        <div class="strength-body">You drive alignment across functions and stakeholders with a speed and precision that is above expectation for your level. You use AI to prepare for difficult conversations, anticipate objections, coordinate across competing priorities, and arrive in rooms already having stress-tested the positions you will face.</div>
+        <div class="strength-why"><strong>Why this matters at your level:</strong> Senior PMs who align stakeholders quickly without repeated escalation multiply their own scope. This is often the difference between a roadmap that moves and one that stalls in review cycles — and at Advanced on the Efficiency side, you are clearly on the right side of that line.</div>
+        <div class="strength-action"><strong>What to do with this strength:</strong> Use this skill to build alignment infrastructure, not just alignment moments. Design shared dashboards, pre-read templates, and communication rhythms so the team runs with less friction even when you are not in the room.</div>
+      </div>
+    </div>
+
+
+    <!-- ── SECTION 3 — DOMAIN DETAIL ── -->
+    <div class="section">
+      <div class="section-num">Section 03</div>
+      <div class="section-title">Domain-by-Domain Assessment</div>
+      <div class="callout">
+        <div class="callout-label">How to read the skill tracks</div>
+        <p>Each skill shows two parallel tracks, with Efficiency AI on top and Opportunity AI below. The dot marks your score for each dimension, positioned at the left for Foundational, center for Applied, and right for Advanced.</p>
+      </div>
+
+      <!-- helper macro as repeated HTML -->
+
+      <!-- DOMAIN 1 -->
+      <div class="domain-block d1">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 1 — Agentic Workflow Direction</div>
+            <div class="domain-block-subdesc">How the PM directs AI agents as active participants in product development</div>
+          </div>
+          <div class="dim-score">
+            <div class="dim-score-label">Efficiency AI</div>
+            <div class="dim-score-val level-applied">Applied</div>
+          </div>
+          <div class="dim-score">
+            <div class="dim-score-label">Opportunity AI</div>
+            <div class="dim-score-val level-foundational">Foundational</div>
+          </div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">You prompt consistently and intentionally, with a clear mental model for what good instructions look like applied across your day-to-day work. Where you have not yet gone is autonomous workflow design. You engage AI interactively but have not structured work so agents can run in the background while you focus elsewhere. Shifting from skilled user to workflow architect is the highest-leverage move available to you in this domain.</div>
+
+          <!-- Skill: Prompt & Req Engineering -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Prompt &amp; Requirements Engineering</div><div class="skill-desc">Translating product intent into precise instructions that AI agents can execute reliably</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: Async Agent Workflow Design -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Async Agent Workflow Design</div><div class="skill-desc">Structuring work so AI agents can operate autonomously in the background</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: Output Validation -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Output Validation &amp; Quality Judgment</div><div class="skill-desc">Critically reviewing AI-generated outputs and knowing when they are good enough to act on</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: Guardrail Literacy -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Guardrail Literacy</div><div class="skill-desc">Understanding design, architecture, security, and platform constraints well enough to keep agent outputs within bounds</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: Rapid Prototyping -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Rapid Prototyping &amp; Visual Requirements</div><div class="skill-desc">Using AI to produce functional low-fidelity representations that communicate intent clearly</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+        </div><!-- /body -->
+      </div><!-- /domain 1 -->
+
+
+      <!-- DOMAIN 2 -->
+      <div class="domain-block d2">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 2 — Data Fluency &amp; Self-Serve Insight</div>
+            <div class="domain-block-subdesc">How the PM accesses, interprets, and acts on data independently</div>
+          </div>
+          <div class="dim-score">
+            <div class="dim-score-label">Efficiency AI</div>
+            <div class="dim-score-val level-applied">Applied</div>
+          </div>
+          <div class="dim-score">
+            <div class="dim-score-label">Opportunity AI</div>
+            <div class="dim-score-val level-foundational">Foundational</div>
+          </div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">Data fluency is one of your clearer Efficiency AI strengths. You query independently, synthesize quickly, and move from raw data to decision-relevant conclusions faster than most peers at your level — Insight Synthesis is a genuine standout on the Efficiency side. The Opportunity AI picture is different. Your data work remains primarily in service of your own decisions rather than reshaping what is measurable or what data systems you build. Natural Language Querying and Metric Definition are both Foundational on the Opportunity side, reflecting that you are not yet using data fluency to drive how your product learns at scale. Closing the gap on experimental design and metric ownership — not just using data, but designing the system that generates it — is the unlock here.</div>
+
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Natural Language Data Querying</div><div class="skill-desc">Pulling product metrics and data on demand using natural language without waiting on analyst support</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Insight Synthesis &amp; AI Recommendation Vetting</div><div class="skill-desc">Moving from raw data to decision-relevant conclusions and critically evaluating AI-generated recommendations</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Metric Definition &amp; Instrumentation Thinking</div><div class="skill-desc">Owning metric design for product areas, including defining how to measure AI feature performance</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Experimental Design Literacy</div><div class="skill-desc">Designing valid A/B tests and holdout experiments with appropriate sample sizing and statistical validity</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /domain 2 -->
+
+
+      <!-- DOMAIN 3 -->
+      <div class="domain-block d3">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 3 — Strategic Judgment &amp; Prioritization</div>
+            <div class="domain-block-subdesc">Higher-order thinking that becomes more critical as AI accelerates delivery</div>
+          </div>
+          <div class="dim-score"><div class="dim-score-label">Efficiency AI</div><div class="dim-score-val level-advanced">Advanced</div></div>
+          <div class="dim-score"><div class="dim-score-label">Opportunity AI</div><div class="dim-score-val level-advanced">Advanced</div></div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">Strategic judgment is your strongest domain across both dimensions. You use AI to stress-test assumptions, structure business cases, and prepare for leadership conversations with a level of speed and precision that is consistently above expectations for your seniority. Vision Articulation is a genuine standout — you build narratives that land, and use AI to anticipate objections before you get in the room. The Opportunity dimension is equally strong here: you have begun designing product experiences that are themselves adaptive, not just using AI to move faster on work you were already doing. This is a meaningful differentiator at the Senior PM level and the foundation for principal-level scope.</div>
+
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Systems Thinking</div><div class="skill-desc">Reasoning about the product as an interconnected ecosystem and anticipating cross-domain impacts</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Opportunity Sizing &amp; Sequencing</div><div class="skill-desc">Making fast, confident calls about what to build next and in what order when delivery capacity expands</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Vision Articulation &amp; Product Storytelling</div><div class="skill-desc">Communicating a multi-horizon product vision and building compelling narratives for leadership and stakeholders</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Risk &amp; Tradeoff Reasoning</div><div class="skill-desc">Developing sharp instincts for what could go wrong and making documented tradeoffs without committee sign-off</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /domain 3 -->
+
+
+      <!-- DOMAIN 4 -->
+      <div class="domain-block d4">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 4 — Discovery, Research &amp; Market Intelligence</div>
+            <div class="domain-block-subdesc">How the PM generates insight about users, markets, and competitors</div>
+          </div>
+          <div class="dim-score"><div class="dim-score-label">Efficiency AI</div><div class="dim-score-val level-foundational">Foundational</div></div>
+          <div class="dim-score"><div class="dim-score-label">Opportunity AI</div><div class="dim-score-val level-applied">Applied</div></div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">Your research instincts are sharp and your Opportunity AI score here reflects that you have meaningfully changed how you design discovery — synthesizing user feedback at scale, running competitive intelligence continuously, and surfacing genuinely new insight rather than confirming assumptions. The Efficiency AI side is still developing. You have not yet systematized AI into your core research workflow, relying on it selectively rather than as a first step. Building consistent AI integration into how you collect, analyze, and act on data is the highest-leverage move in this domain.</div>
+
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">AI-Augmented User Research</div><div class="skill-desc">Using AI to run research at scale, synthesize qualitative feedback rapidly, and surface behavioral patterns</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Competitive &amp; Market Intelligence</div><div class="skill-desc">Using AI to continuously monitor competitors and translate observations into strategic implications</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /domain 4 -->
+
+
+      <!-- DOMAIN 5 -->
+      <div class="domain-block d5">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 5 — Launch, GTM &amp; High-Velocity Delivery</div>
+            <div class="domain-block-subdesc">How the PM ships and coordinates launches in a high-velocity environment</div>
+          </div>
+          <div class="dim-score"><div class="dim-score-label">Efficiency AI</div><div class="dim-score-val level-applied">Applied</div></div>
+          <div class="dim-score"><div class="dim-score-label">Opportunity AI</div><div class="dim-score-val level-applied">Applied</div></div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">Your launch execution is strong. You use AI consistently for GTM preparation and stakeholder alignment, and your communication at speed is a genuine strength. The opportunity dimension is growing. You have started to experiment with incremental release approaches but have not yet fully shifted to a continuous launch model. PM-engineer pairing is the skill to develop here, working fluidly in small pods where the conversation is the requirements artifact.</div>
+
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">PM–Engineer Pairing in Agentic Context</div><div class="skill-desc">Working fluidly in small pods where conversation is the requirements artifact</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Continuous Launch &amp; GTM Orchestration</div><div class="skill-desc">Managing frequent incremental launches and coordinating GTM across functions at speed</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Cross-System &amp; Stakeholder Alignment at Speed</div><div class="skill-desc">Flagging cross-domain impacts early and closing alignment loops without becoming a bottleneck</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker adv"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /domain 5 -->
+
+
+      <!-- DOMAIN 6 -->
+      <div class="domain-block d6">
+        <div class="domain-block-header">
+          <div>
+            <div class="domain-block-title">Domain 6 — AI Org Leadership &amp; Ethics</div>
+            <div class="domain-block-subdesc">Organizational design, governance, and ethical responsibility</div>
+          </div>
+          <div class="dim-score"><div class="dim-score-label">Efficiency AI</div><div class="dim-score-val level-foundational">Foundational</div></div>
+          <div class="dim-score"><div class="dim-score-label">Opportunity AI</div><div class="dim-score-val level-foundational">Foundational</div></div>
+        </div>
+        <div class="domain-block-body">
+          <div class="domain-insight">Domain 6 is assessed at light depth for Senior PMs. You demonstrate sound ethical judgment, thinking carefully about user trust before shipping AI-driven features and maintaining working awareness of relevant regulatory context. The org leadership, talent strategy, and vendor decision skills in this domain are primarily scoped to executive-level PMs and are not fully assessed here.</div>
+
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">AI Workflow Architecture</div><div class="skill-desc">Designing the operating model for agentic pods, including governance and output quality assurance</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Ethical Product Judgment &amp; User Trust</div><div class="skill-desc">Acting as an ethical backstop before features ship, with awareness of regulatory requirements for AI-driven products</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker appl"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: Talent & Role Evolution Strategy -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">Talent &amp; Role Evolution Strategy</div><div class="skill-desc">Making informed decisions about how PM roles change and how to develop team AI capability</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+          <!-- Skill: AI Tool & Vendor Strategy -->
+          <div class="skill-row">
+            <div class="skill-info"><div class="skill-name">AI Tool &amp; Vendor Strategy</div><div class="skill-desc">Evaluating and selecting agentic tools, building investment cases, and staying current on capability trajectories</div></div>
+            <div class="skill-track-wrap">
+              <div class="skill-track"><div class="track-label eff">Efficiency AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+              <div class="skill-track"><div class="track-label opp">Opportunity AI</div><div class="track-bar"><div class="track-segment"></div><div class="track-segment"></div><div class="track-segment"></div><div class="track-marker found"></div></div><div class="track-labels-row"><span>Foundational</span><span>Applied</span><span>Advanced</span></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /domain 6 -->
+
+    </div><!-- /section 3 -->
+
+
+    <!-- ── SECTION 4 — ROADMAP ── -->
+    <div class="section">
+      <div class="section-num">Section 04</div>
+      <div class="section-title">Your Personalized Development Roadmap</div>
+      <p>The roadmap below is sequenced by leverage and effort. Start with Tier 1 — these are moves you can make within your current work without taking on new projects. Tier 2 requires more intentionality but will have the largest impact on your profile over the next quarter. Tier 3 is the horizon you are building toward.</p>
+
+      <div class="rec-caveat"><strong>A note on these recommendations.</strong> This roadmap is built from your assessment profile and is intended as a starting point for your own judgment — not a directive. Whether and how to pursue each item will depend on your organization's culture, your manager's priorities, and the tools and resources available to you. Items tagged <em>May require…</em> have prerequisites that may be outside your direct control to create on your own, and are best approached as conversations with your manager or team rather than actions you take unilaterally.</div>
+
+      <div class="tier">
+        <div class="tier-header t1">
+          <div class="tier-name">Tier 1 — Quick Wins</div>
+          <div class="tier-time">Next 30 days</div>
+        </div>
+        <div class="tier-body">
+          <ul>
+            <li><span class="roadmap-item-title">Build your first reusable prompt workflow<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Pick one recurring task (a weekly data review, competitive scan, or stakeholder update) and write a prompt for it this week. Save it somewhere you will actually use it and run it three times before revising.</span></li>
+            <li><span class="roadmap-item-title">AI-first planning prep<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Before your next planning session, run your full qualitative feedback backlog through AI synthesis before you look at any of it manually. Note where the AI-generated themes surprised you versus confirmed what you already believed.</span></li>
+            <li><span class="roadmap-item-title">Set up a competitive monitoring workflow<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Write a prompt that monitors one specific competitor's product releases and summarises changes on a weekly cadence. Treat this as a workflow you run consistently, not a one-off query.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-header t2">
+          <div class="tier-name">Tier 2 — Priority Development</div>
+          <div class="tier-time">Next 90 days</div>
+        </div>
+        <div class="tier-body">
+          <ul>
+            <li><span class="roadmap-item-title">Design your first async agent workflow<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Identify one research or analysis task that currently requires your active attention and redesign it as a background workflow. The target is a usable output produced without you monitoring it step by step.</span></li>
+            <li><span class="roadmap-item-title">Own the next experiment design<span class="roadmap-dep">May require manager alignment</span></span><span class="roadmap-item-detail">Design the next experiment your team runs rather than delegating it. Use AI to check your sample sizing, identify confounds, and validate the measurement approach. Share it with a data partner for a quick sanity check before kicking it off.</span></li>
+            <li><span class="roadmap-item-title">Practice PM–engineer pairing<span class="roadmap-dep">May require team buy-in</span></span><span class="roadmap-item-detail">In your next sprint, work through one feature in dialogue with an engineer rather than writing a spec first. Let the conversation be the requirements artifact and debrief afterward on what worked.</span></li>
+            <li><span class="roadmap-item-title">Translate competitive intelligence to roadmap decisions<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Take your next competitive intelligence summary and write a direct translation where each observation resolves to a specific build, defer, or monitor decision on your roadmap.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-header t3">
+          <div class="tier-name">Tier 3 — Building Toward</div>
+          <div class="tier-time">6+ months</div>
+        </div>
+        <div class="tier-body">
+          <ul>
+            <li><span class="roadmap-item-title">Build an autonomous competitive research loop<span class="roadmap-dep">Self-directed</span></span><span class="roadmap-item-detail">Design an agent that pulls competitive signals, synthesises them against your current roadmap priorities, and flags where those priorities may need to shift. This is infrastructure-level thinking applied to your growth domain.</span></li>
+            <li><span class="roadmap-item-title">Lead metric and instrumentation design<span class="roadmap-dep">May require manager alignment</span></span><span class="roadmap-item-detail">Take ownership of instrumentation design for your next major feature. Define leading and lagging indicators, specify logging requirements, and define what measurable good looks like for AI-generated outputs.</span></li>
+            <li><span class="roadmap-item-title">Redesign team discovery with AI as a participant<span class="roadmap-dep">May require organizational support</span></span><span class="roadmap-item-detail">Rebuild your team's discovery process so AI is a first-class input, with continuous behavioral signal monitoring, AI-synthesised interview analysis, and always-on competitive tracking feeding directly into planning.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div><!-- /section 4 -->
+
+
+    <!-- ── SECTION 5 — SENIORITY ALIGNMENT ── -->
+    <div class="section">
+      <div class="section-num">Section 05</div>
+      <div class="section-title">Seniority Alignment Check</div>
+      <p>This section checks your profile against the skills the framework identifies as most critical at Senior PM level. For each skill, the dot shows whether you are <strong style="color:var(--amber)">Catching up</strong> (a gap to close), <strong style="color:var(--navy)">Well-calibrated</strong> (where you should be), or <strong style="color:var(--green)">Ahead of level</strong> (performing above expectations for your seniority).</p>
+
+      <table class="seniority-table">
+        <thead>
+          <tr>
+            <th style="width:48%">Skill</th>
+            <th style="color:var(--amber);width:17%">Catching up</th>
+            <th style="color:var(--navy);width:17%">Well-calibrated</th>
+            <th style="color:var(--green);width:17%">Ahead of level</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ── Domain 1 ── -->
+          <tr class="domain-group-row d1">
+            <td colspan="4">Domain 1 — Agentic Workflow Direction</td>
+          </tr>
+          <tr><td>Prompt &amp; Requirements Engineering</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Async Agent Workflow Design</td><td><div class="calib-dot-wrap"><div class="calib-dot filled-amber"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Output Validation &amp; Quality Judgment</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Guardrail Literacy</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Rapid Prototyping &amp; Visual Requirements</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+
+          <!-- ── Domain 2 ── -->
+          <tr class="domain-group-row d2">
+            <td colspan="4">Domain 2 — Data Fluency &amp; Self-Serve Insight</td>
+          </tr>
+          <tr><td>Natural Language Data Querying</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Insight Synthesis &amp; AI Recommendation Vetting</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-green"></div></div></td></tr>
+          <tr><td>Metric Definition &amp; Instrumentation Thinking</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Experimental Design Literacy</td><td><div class="calib-dot-wrap"><div class="calib-dot filled-amber"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+
+          <!-- ── Domain 3 ── -->
+          <tr class="domain-group-row d3">
+            <td colspan="4">Domain 3 — Strategic Judgment &amp; Prioritization</td>
+          </tr>
+          <tr><td>Systems Thinking</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Opportunity Sizing &amp; Sequencing</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Vision Articulation &amp; Product Storytelling</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-green"></div></div></td></tr>
+          <tr><td>Risk &amp; Tradeoff Reasoning</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+
+          <!-- ── Domain 4 ── -->
+          <tr class="domain-group-row d4">
+            <td colspan="4">Domain 4 — Discovery, Research &amp; Market Intelligence</td>
+          </tr>
+          <tr><td>AI-Augmented User Research</td><td><div class="calib-dot-wrap"><div class="calib-dot filled-amber"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Competitive &amp; Market Intelligence</td><td><div class="calib-dot-wrap"><div class="calib-dot filled-amber"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+
+          <!-- ── Domain 5 ── -->
+          <tr class="domain-group-row d5">
+            <td colspan="4">Domain 5 — Launch, GTM &amp; High-Velocity Delivery</td>
+          </tr>
+          <tr><td>PM–Engineer Pairing in Agentic Context</td><td><div class="calib-dot-wrap"><div class="calib-dot filled-amber"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Continuous Launch &amp; GTM Orchestration</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Cross-System &amp; Stakeholder Alignment at Speed</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-green"></div></div></td></tr>
+
+          <!-- ── Domain 6 ── -->
+          <tr class="domain-group-row d6">
+            <td colspan="4">Domain 6 — Executive: AI Org Leadership &amp; Ethics</td>
+          </tr>
+          <tr><td>AI Workflow Architecture <em>(Exec)</em></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Talent &amp; Role Evolution Strategy <em>(Exec)</em></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>Ethical Product Judgment &amp; User Trust</td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+          <tr><td>AI Tool &amp; Vendor Strategy <em>(Exec)</em></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot filled-navy"></div></div></td><td><div class="calib-dot-wrap"><div class="calib-dot "></div></div></td></tr>
+
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <div class="callout-label">Overall Seniority Read</div>
+        <p>Your profile is well-calibrated for a Senior PM overall, with genuine standout skills and two development gaps worth prioritizing. Vision Articulation is Advanced on both dimensions, and Insight Synthesis is Advanced on the Efficiency side — meaningful differentiators that give you an edge in leadership visibility and planning conversations. The gaps worth closing are Efficiency AI in Discovery and Research (where AI use remains selective rather than systematic) and Opportunity AI in Data Fluency (where data skills have not yet translated into building better-learning products). Async workflow design and experimental design are also Foundational and remain below expectation for a Senior PM with eight years of experience. These represent the highest-leverage investments for the next two quarters.</p>
+      </div>
+    </div><!-- /section 5 -->
+
+
+    <!-- ── SECTION 6 — NEXT ACTIONS ── -->
+    <div class="section">
+      <div class="section-num">Section 06</div>
+      <div class="section-title">Your Next 5 Actions</div>
+      <p>These are the five most concrete, highest-leverage moves based on your full assessment profile.</p>
+
+      <div class="rec-caveat">These actions are tailored to your profile and are meant as ideas to consider — not instructions to follow. What is immediately actionable will depend on what your organization, manager, and team currently make possible.</div>
+
+      <div class="action-list">
+        <div class="action-item">
+          <div class="action-num">1</div>
+          <div class="action-text"><div class="action-title">This week: write one reusable prompt</div><div class="action-detail">Pick one weekly task and write a prompt for it. Save it somewhere you will actually use it, whether that is a doc, a snippet tool, or a dedicated project in Claude.</div></div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">2</div>
+          <div class="action-text"><div class="action-title">This sprint: own the next experiment design</div><div class="action-detail">Design the experiment yourself rather than delegating it. Use AI to check your sample sizing and surface potential confounds, then share with a data partner for a sanity check.</div></div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">3</div>
+          <div class="action-text"><div class="action-title">Before next planning: AI-synthesised feedback first</div><div class="action-detail">Run your qualitative feedback backlog through AI before the planning session. Arrive with AI-generated themes as the starting point for prioritisation discussion.</div></div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">4</div>
+          <div class="action-text"><div class="action-title">This quarter: systematize AI into your research workflow</div><div class="action-detail">Pick one recurring research or discovery task — user interview synthesis, competitive monitoring, or requirements gathering — and rebuild it with AI as the first step, not an optional one. The goal is a repeatable workflow that runs consistently, not a one-off experiment.</div></div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">5</div>
+          <div class="action-text"><div class="action-title">This quarter: ship one background agent workflow</div><div class="action-detail">Redesign one recurring research or analysis task as a background workflow that produces a usable output without you managing it step by step.</div></div>
+        </div>
+      </div>
+    </div><!-- /section 6 -->
+
+    <!-- Closing -->
+    <div class="closing">
+      <div class="closing-quote">"Progress does not require a dramatic shift all at once."</div>
+      <div class="closing-sub">It requires consistent, deliberate practice in the areas that matter most for your role and your team.</div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>AI Fluency Framework — v1.0 &nbsp;·&nbsp; © 2026 Adrian Chiu</span>
+    <span>Confidential — Individual Use Only &nbsp;·&nbsp; May 2026</span>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ── Radar chart domain tooltip ── -->
+<div id="radar-tooltip" role="tooltip" aria-hidden="true">
+  <div class="tt-header">
+    <span class="tt-num"></span>
+    <span class="tt-name"></span>
+  </div>
+  <div class="tt-desc"></div>
+  <div class="tt-skills-label">Skills</div>
+  <ul class="tt-skills"></ul>
+</div>
+
+<style>
+  #radar-tooltip {
+    position: fixed;
+    display: none;
+    background: #1B2A4A;
+    color: #fff;
+    border-radius: 10px;
+    padding: 14px 16px 12px;
+    width: 230px;
+    box-shadow: 0 10px 32px rgba(0,0,0,.28);
+    pointer-events: none;
+    z-index: 9999;
+    font-family: 'DM Sans', sans-serif;
+    border-top: 3px solid var(--tt-color, #fff);
+  }
+  #radar-tooltip .tt-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+  #radar-tooltip .tt-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--tt-color, #fff);
+    color: #1B2A4A;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  #radar-tooltip .tt-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    color: #fff;
+  }
+  #radar-tooltip .tt-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  #radar-tooltip .tt-skills-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.4);
+    margin-bottom: 5px;
+  }
+  #radar-tooltip .tt-skills {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  #radar-tooltip .tt-skills li {
+    font-size: 11.5px;
+    color: rgba(255,255,255,.85);
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 1.4;
+  }
+  #radar-tooltip .tt-skills li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--tt-color, #fff);
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+(function () {
+  const DOMAINS = {
+    1: {
+      name: 'Agentic Workflow',
+      color: '#3EC9A0',
+      numColor: '#1B2A4A',
+      desc: 'Working fluidly with AI tools — from crafting precise prompts to designing multi-step automated workflows and validating outputs.',
+      skills: ['Prompt & Requirements Engineering', 'Async Agent Workflow Design', 'Output Validation', 'Guardrail Literacy', 'Rapid Prototyping']
+    },
+    2: {
+      name: 'Data Fluency',
+      color: '#8B84F5',
+      numColor: '#FFFFFF',
+      desc: 'Querying, interpreting, and reasoning over data with AI — natural language analysis, insight synthesis, metric design, and experiment framing.',
+      skills: ['Natural Language Querying', 'Insight Synthesis', 'Metric Definition', 'Experimental Design']
+    },
+    3: {
+      name: 'Strategic Judgment',
+      color: '#E8A020',
+      numColor: '#1B2A4A',
+      desc: 'Applying AI to complex product decisions — identifying opportunities, sizing bets, articulating vision, and reasoning about risk.',
+      skills: ['Systems Thinking', 'Opportunity Sizing', 'Vision Articulation', 'Risk Reasoning']
+    },
+    4: {
+      name: 'Discovery & Research',
+      color: '#E0527E',
+      numColor: '#FFFFFF',
+      desc: 'Accelerating discovery with AI — from synthesizing user research and competitive intelligence to defining requirements.',
+      skills: ['User Research with AI', 'Competitive Intelligence']
+    },
+    5: {
+      name: 'Launch & Delivery',
+      color: '#3898D8',
+      numColor: '#FFFFFF',
+      desc: 'Using AI to ship faster and with more confidence — pairing with engineering, orchestrating go-to-market, and aligning stakeholders.',
+      skills: ['PM–Engineer Pairing', 'GTM Orchestration', 'Stakeholder Alignment']
+    },
+    6: {
+      name: 'Org & Ethics',
+      color: '#5FA82A',
+      numColor: '#FFFFFF',
+      desc: 'Setting the conditions for AI-augmented teams — workflow architecture, ethical judgment, talent strategy, and vendor decisions.',
+      skills: ['Workflow Architecture', 'Ethical Judgment', 'Talent & Role Evolution', 'AI Tool & Vendor Strategy']
+    }
+  };
+
+  const tip  = document.getElementById('radar-tooltip');
+  const ttNum  = tip.querySelector('.tt-num');
+  const ttName = tip.querySelector('.tt-name');
+  const ttDesc = tip.querySelector('.tt-desc');
+  const ttList = tip.querySelector('.tt-skills');
+
+  function populate(domainId) {
+    const d = DOMAINS[domainId];
+    tip.style.setProperty('--tt-color', d.color);
+    ttNum.textContent  = domainId;
+    ttNum.style.color  = d.numColor;
+    ttName.textContent = d.name;
+    ttDesc.textContent = d.desc;
+    ttList.innerHTML   = d.skills.map(s => `<li>${s}</li>`).join('');
+  }
+
+  function position(e) {
+    const W = window.innerWidth, H = window.innerHeight;
+    const TW = 246, TH = tip.offsetHeight || 200;
+    let x = e.clientX + 16;
+    let y = e.clientY + 16;
+    if (x + TW > W - 8) x = e.clientX - TW - 16;
+    if (y + TH > H - 8) y = e.clientY - TH - 16;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+
+  document.querySelectorAll('.domain-badge-group').forEach(function (g) {
+    const id = g.getAttribute('data-domain');
+
+    g.addEventListener('mouseenter', function (e) {
+      populate(id);
+      tip.style.display = 'block';
+      position(e);
+    });
+    g.addEventListener('mousemove', position);
+    g.addEventListener('mouseleave', function () {
+      tip.style.display = 'none';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
