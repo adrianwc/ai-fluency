@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>The Future of Work for Product Managers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --navy:      #01082E;
+    --blue1:     #2A3D7A;
+    --blue2:     #3D5BA8;
+    --white:     #FFFFFF;
+    --text:      #111827;
+    --muted:     #374151;
+    --bg:        #F8F9FB;
+    --card:      #FFFFFF;
+    --border:    #C9D3DC;
+    --blue-tint: #EBF4FC;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute; top: -999px; left: 0;
+    background: var(--blue2); color: white;
+    padding: 8px 16px; font-size: 14px; z-index: 9999;
+    text-decoration: none; border-radius: 0 0 4px 0;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* ── READING PROGRESS ── */
+  #readingProgress {
+    position: fixed; top: 0; left: 0;
+    height: 3px; background: var(--blue2);
+    z-index: 9999; transition: width 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    background: rgba(1,8,46,0.97);
+    backdrop-filter: blur(8px);
+    position: sticky; top: 0; z-index: 200;
+    padding: 0 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(61,91,168,0.3);
+    min-height: 52px;
+  }
+  .top-bar-back {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #7A9ED4;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .top-bar-back:hover { color: var(--white); }
+  .top-bar-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .top-bar-title {
+    font-size: 12px; font-weight: 400; color: #3A4880;
+    letter-spacing: 0.04em; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; max-width: 400px;
+  }
+  .top-bar-cta {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    color: #7A9ED4; text-decoration: none;
+    padding: 6px 16px; border: 1px solid rgba(61,91,168,0.4);
+    border-radius: 4px; transition: all 0.2s; white-space: nowrap;
+  }
+  .top-bar-cta:hover { color: white; border-color: var(--blue2); background: rgba(61,91,168,0.15); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 72px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -100px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,91,168,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-series {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #7A9ED4; margin-bottom: 8px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700; color: var(--white);
+    line-height: 1.08; margin-bottom: 24px; max-width: 760px;
+  }
+  .hero h1 em { font-style: italic; color: #7A9ED4; }
+  .hero-sub {
+    font-size: 17px; font-weight: 300; color: #9FACD4;
+    max-width: 560px; line-height: 1.7; margin-bottom: 28px;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 20px;
+    font-size: 13px; color: #3A4880;
+  }
+  .hero-meta-divider { width: 1px; height: 14px; background: #1A2660; }
+  .hero-reading-time { color: #5A78B0; }
+
+  /* ── PAGE LAYOUT ── */
+  .page-layout {
+    max-width: 1160px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    padding: 0 40px;
+    align-items: start;
+  }
+
+  /* ── SIDEBAR TOC ── */
+  .toc-wrap {
+    position: sticky; top: 72px;
+    padding: 56px 40px 56px 0;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto; scrollbar-width: none;
+  }
+  .toc-wrap::-webkit-scrollbar { display: none; }
+  .toc-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue2); margin-bottom: 20px;
+  }
+  .toc-list { list-style: none; }
+  .toc-item { margin-bottom: 2px; }
+  .toc-link {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: #8a9aaa; text-decoration: none;
+    padding: 7px 0 7px 3px; line-height: 1.4; transition: color 0.2s;
+    border: none; background: none; cursor: pointer;
+    text-align: left; width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+  .toc-link:hover { color: var(--navy); }
+  .toc-link.active { color: var(--blue1); font-weight: 500; }
+  .toc-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #c9d3dc; flex-shrink: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .toc-link.active .toc-dot { background: var(--blue2); transform: scale(1.3); }
+  .toc-divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .toc-framework-link {
+    display: block; margin-top: 24px;
+    font-size: 12px; font-weight: 500; color: var(--white);
+    background: var(--blue1); padding: 10px 14px; border-radius: 6px;
+    text-decoration: none; text-align: center; line-height: 1.4;
+    transition: background 0.2s;
+  }
+  .toc-framework-link:hover { background: var(--navy); }
+
+  /* ── ARTICLE ── */
+  article {
+    padding: 56px 0 100px 60px;
+    border-left: 1px solid var(--border);
+    max-width: 720px;
+  }
+
+  /* ── PROSE SECTION ── */
+  .prose-section { margin-bottom: 72px; scroll-margin-top: 80px; }
+
+  /* ── SECTION LABELS & HEADINGS ── */
+  .section-eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--blue2);
+    margin-bottom: 16px; display: block;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 4.5vw, 54px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.1; margin-bottom: 32px; max-width: 620px;
+  }
+
+  /* ── PROSE ── */
+  .prose p {
+    font-size: 17px; line-height: 1.85;
+    color: var(--text); margin-bottom: 1.4em;
+  }
+  .prose p:last-child { margin-bottom: 0; }
+
+  /* ── PROSE LIST ── */
+  .prose-list { margin: 0 0 1.4em 0; padding-left: 0; list-style: none; }
+  .prose-list li {
+    font-size: 17px; line-height: 1.85; color: var(--text);
+    padding-left: 20px; position: relative; margin-bottom: 0.6em;
+  }
+  .prose-list li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--blue2);
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--blue2);
+    padding: 20px 28px; background: var(--blue-tint);
+    border-radius: 0 10px 10px 0; margin: 36px 0;
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px; font-style: italic;
+    color: #0A2540; line-height: 1.3; margin: 0;
+  }
+
+  /* ── KEY INSIGHT CALLOUT ── */
+  .callout-insight {
+    background: var(--white);
+    border: 1px solid rgba(61,91,168,0.25);
+    border-left: 4px solid var(--blue2);
+    border-radius: 0 10px 10px 0;
+    padding: 24px 28px; margin: 36px 0;
+    box-shadow: 0 2px 12px rgba(1,8,46,0.06);
+  }
+  .callout-insight-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--blue2);
+    margin-bottom: 10px; display: block;
+  }
+  .callout-insight p {
+    font-size: 16px; color: #0A2540; line-height: 1.75; margin: 0;
+    font-weight: 400;
+  }
+
+  /* ── DARK CALLOUT ── */
+  .callout-dark {
+    background: var(--navy);
+    border-radius: 12px; padding: 28px 32px; margin: 36px 0;
+  }
+  .callout-dark-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #7A9ED4;
+    margin-bottom: 10px; display: block;
+  }
+  .callout-dark p {
+    font-size: 16px; color: #C5CCE8; line-height: 1.75; margin: 0;
+  }
+
+  /* ── STAGE BLOCK ── */
+  .stage-block {
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin-bottom: 32px; background: var(--card);
+  }
+  .stage-header {
+    background: var(--navy); padding: 24px 32px;
+    display: flex; align-items: baseline; gap: 20px;
+  }
+  .stage-num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px; font-weight: 700;
+    color: rgba(61,91,168,0.4); line-height: 1; flex-shrink: 0;
+  }
+  .stage-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #7A9ED4; margin-bottom: 4px;
+  }
+  .stage-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px; font-weight: 700; color: var(--white); line-height: 1.2;
+  }
+  .stage-body { padding: 32px 36px; }
+  .stage-body p {
+    font-size: 16px; line-height: 1.85; color: var(--muted); margin-bottom: 1.2em;
+  }
+  .stage-body p:last-child { margin-bottom: 0; }
+  .stage-list { margin: 0 0 1.2em 0; padding-left: 0; list-style: none; }
+  .stage-list li {
+    font-size: 16px; line-height: 1.8; color: var(--muted);
+    padding-left: 18px; position: relative; margin-bottom: 0.5em;
+  }
+  .stage-list li::before {
+    content: ''; position: absolute; left: 0; top: 12px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--blue2);
+  }
+
+  /* ── SHIFT ITEM ── */
+  .shift-item {
+    padding: 36px 0; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 36px 1fr;
+    gap: 20px; align-items: start;
+  }
+  .shift-item:last-child { border-bottom: none; }
+  .shift-item-num {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; color: var(--blue2); padding-top: 8px;
+  }
+  .shift-item-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px; font-weight: 700; color: var(--navy);
+    margin-bottom: 14px; line-height: 1.2;
+  }
+  .shift-item p {
+    font-size: 16px; color: var(--muted); line-height: 1.85; margin-bottom: 0;
+  }
+
+  /* ── ACTION LIST ── */
+  .action-list { margin: 32px 0; }
+  .action-item {
+    display: grid; grid-template-columns: 28px 1fr;
+    gap: 18px; align-items: start;
+    padding: 20px 0; border-bottom: 1px solid var(--border);
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-num {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; color: var(--blue2); padding-top: 5px;
+  }
+  .action-title { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 6px; }
+  .action-desc { font-size: 15.5px; color: var(--muted); line-height: 1.8; }
+
+  /* ── SECTION DIVIDER ── */
+  .prose-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue1) 0%, transparent 60%);
+    margin: 72px 0;
+  }
+
+  /* ── CTA BLOCK ── */
+  .cta-block {
+    background: var(--navy); border-radius: 16px;
+    padding: 48px 44px; text-align: center;
+    position: relative; overflow: hidden; margin-top: 48px;
+  }
+  .cta-block::before {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,91,168,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-block-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(22px, 3vw, 32px); font-weight: 700;
+    color: var(--white); line-height: 1.2; margin-bottom: 12px;
+  }
+  .cta-block-title em { font-style: italic; color: #7A9ED4; }
+  .cta-block-sub {
+    font-size: 15px; color: #8A9ED0; line-height: 1.7;
+    margin-bottom: 32px; max-width: 460px; margin-left: auto; margin-right: auto;
+  }
+  .cta-block-btn {
+    display: inline-block; background: var(--blue2); color: white;
+    font-size: 14px; font-weight: 500; padding: 13px 28px;
+    border-radius: 6px; text-decoration: none; letter-spacing: 0.04em;
+    transition: background 0.2s;
+  }
+  .cta-block-btn:hover { background: var(--blue1); }
+
+  /* ── AUTHOR BIO ── */
+  .author-section {
+    background: #EEF2F7;
+    border-top: 1px solid var(--border);
+    padding: 72px 60px;
+  }
+  .author-inner {
+    max-width: 780px; margin: 0 auto;
+    display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start;
+  }
+  .author-avatar {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--navy); border: 3px solid var(--blue2);
+    overflow: hidden; flex-shrink: 0;
+  }
+  .author-avatar img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .author-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue2); margin-bottom: 6px;
+  }
+  .author-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 14px;
+  }
+  .author-bio { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #000208; padding: 32px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left { font-size: 12px; color: #3A5060; }
+  .footer-right { font-size: 12px; color: #3A5060; font-style: italic; }
+  .footer-right a { color: #5A78B0; text-decoration: underline; }
+  .footer-right a:hover { color: #7A9ED4; }
+
+  /* ── FOCUS STYLES ── */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--blue2); outline-offset: 3px; border-radius: 2px;
+  }
+
+  /* ── MOBILE TOC ── */
+  .mobile-toc {
+    display: none; background: var(--white);
+    border-bottom: 1px solid var(--border); padding: 12px 24px;
+  }
+  .mobile-toc-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--blue2);
+    margin-bottom: 8px; display: block;
+  }
+  .mobile-toc-links { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mobile-toc-link {
+    font-size: 12px; color: var(--muted); padding: 5px 12px;
+    border: 1px solid var(--border); border-radius: 20px;
+    text-decoration: none; transition: all 0.2s; white-space: nowrap;
+  }
+  .mobile-toc-link:hover { border-color: var(--blue2); color: var(--blue1); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .top-bar { padding: 0 24px; }
+    .top-bar-title { display: none; }
+    .page-layout { grid-template-columns: 1fr; padding: 0 24px; }
+    .toc-wrap { display: none; }
+    .mobile-toc { display: block; }
+    article { padding: 36px 0 80px 0; border-left: none; max-width: 100%; }
+    .hero { padding: 52px 24px 60px; }
+    footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px; }
+    .stage-header { flex-direction: column; gap: 8px; }
+    .author-section { padding: 48px 24px; }
+    .author-inner { grid-template-columns: 1fr; gap: 24px; }
+    .section-heading { font-size: clamp(28px, 7vw, 40px); }
+    /* Offset section anchors so sticky top bar doesn't obscure them */
+    [id^="section-"] { scroll-margin-top: 60px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS — replace placeholder IDs before publishing
+       GA4 Measurement ID  → G-56ZT9PQPX6
+       Clarity Project ID  → wlpkye7wf6
+  ══════════════════════════════════════════════ -->
+
+  <!-- Google tag (gtag.js) — GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56ZT9PQPX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-56ZT9PQPX6', {
+      page_title: 'The Future of Work for Product Managers — Full Document',
+      page_location: window.location.href
+    });
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","wlpkye7wf6");
+  </script>
+
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="readingProgress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <a href="index.html" class="top-bar-back" aria-label="Back to interactive overview">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    Overview
+  </a>
+  <span class="top-bar-title">The Future of Work for Product Managers</span>
+  <a href="ai_fluency_framework.html" class="top-bar-cta">AI Fluency Framework →</a>
+</header>
+
+<!-- MOBILE TOC -->
+<nav class="mobile-toc" aria-label="Article sections">
+  <span class="mobile-toc-label">In this document</span>
+  <div class="mobile-toc-links">
+    <a href="#section-purpose" class="mobile-toc-link">Purpose</a>
+    <a href="#section-introduction" class="mobile-toc-link">Introduction</a>
+    <a href="#section-in-practice" class="mobile-toc-link">In practice</a>
+    <a href="#section-key-shifts" class="mobile-toc-link">Key shifts</a>
+    <a href="#section-what-stays" class="mobile-toc-link">What doesn't change</a>
+    <a href="#section-personal-ask" class="mobile-toc-link">The personal ask</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <p class="hero-series">AI Fluency Series</p>
+  <h1>The Future of Work<br>for <em>Product Managers</em></h1>
+  <p class="hero-sub">How AI is reshaping the work, and the opportunity, ahead.</p>
+  <div class="hero-meta">
+    <span>By Adrian Chiu</span>
+    <div class="hero-meta-divider" aria-hidden="true"></div>
+    <span class="hero-reading-time">~15 min read</span>
+  </div>
+</div>
+
+<!-- PAGE LAYOUT -->
+<div class="page-layout">
+
+  <!-- SIDEBAR TOC -->
+  <nav class="toc-wrap" aria-label="Table of contents">
+    <p class="toc-label">In this document</p>
+    <ul class="toc-list" role="list">
+      <li class="toc-item">
+        <button class="toc-link active" data-target="section-purpose" onclick="scrollToSection('section-purpose')" aria-current="true">
+          <span class="toc-dot" aria-hidden="true"></span>Purpose
+        </button>
+      </li>
+      <li class="toc-item">
+        <button class="toc-link" data-target="section-introduction" onclick="scrollToSection('section-introduction')">
+          <span class="toc-dot" aria-hidden="true"></span>Introduction
+        </button>
+      </li>
+      <li class="toc-item">
+        <button class="toc-link" data-target="section-in-practice" onclick="scrollToSection('section-in-practice')">
+          <span class="toc-dot" aria-hidden="true"></span>What it looks like in practice
+        </button>
+      </li>
+      <li class="toc-item">
+        <button class="toc-link" data-target="section-key-shifts" onclick="scrollToSection('section-key-shifts')">
+          <span class="toc-dot" aria-hidden="true"></span>The key shifts
+        </button>
+      </li>
+      <li class="toc-item">
+        <button class="toc-link" data-target="section-what-stays" onclick="scrollToSection('section-what-stays')">
+          <span class="toc-dot" aria-hidden="true"></span>What doesn't change
+        </button>
+      </li>
+      <li class="toc-item">
+        <button class="toc-link" data-target="section-personal-ask" onclick="scrollToSection('section-personal-ask')">
+          <span class="toc-dot" aria-hidden="true"></span>The personal ask
+        </button>
+      </li>
+    </ul>
+    <div class="toc-divider" aria-hidden="true"></div>
+    <a href="ai_fluency_framework.html" class="toc-framework-link">
+      Explore the AI Fluency Framework →
+    </a>
+  </nav>
+
+  <!-- ARTICLE -->
+  <article id="main-content">
+
+    <!-- PURPOSE -->
+    <div class="prose-section" id="section-purpose" aria-labelledby="heading-purpose">
+      <span class="section-eyebrow">Purpose</span>
+      <div class="prose">
+        <p>This document is written for product managers and product leaders working in software product development organizations who want to think clearly about what their work will look like in the next few years. It is not a prediction. How the future unfolds will vary by company, team, and context, and the specific scenarios described here may look different depending on where you work. That said, the underlying shifts in how judgment, speed, and accountability are distributed across product teams are likely to hold across most product development environments.</p>
+      </div>
+    </div>
+
+    <div class="prose-divider" aria-hidden="true"></div>
+
+    <!-- INTRODUCTION -->
+    <div class="prose-section" id="section-introduction" aria-labelledby="heading-introduction">
+      <span class="section-eyebrow">Introduction</span>
+      <div class="prose">
+        <p>A significant portion of the work that fills a product manager's week is structural in nature. Writing tickets so engineering has what it needs. Driving alignment across stakeholders. Synthesizing a week of notes and conversations into a document that everyone can act on. These tasks take real skill and doing them well matters. But they tend to crowd out the work that most product managers find most meaningful, and they are rarely what separates the best from the rest.</p>
+        <p>Most product managers got into this field because they wanted to build things, solve a real problem, and see it land with the people it was meant for. If that is what drew you in, the shift underway is largely good news. The parts of the job that have always felt furthest from that original motivation are exactly the parts that AI is taking on. What is coming into focus in their place is closer to why most of us chose this work in the first place.</p>
+        <p>AI systems are becoming capable of handling substantial parts of this structural layer: drafting and refining requirements, synthesizing research, surfacing patterns in data, generating and reviewing code, and keeping the coordination threads across a team from fraying. Because of that, the work that has always been hardest to do well, the thinking, the judgment, the genuine understanding of what a user needs and why, is becoming more consequential. That is why the investment in developing a new set of skills is worth making now.</p>
+      </div>
+
+      <div class="callout-insight" role="complementary">
+        <span class="callout-insight-label">The core of the shift</span>
+        <p>The parts of the job that have consumed the most time and felt furthest from meaningful work are exactly the parts AI is taking on. What replaces them is the judgment, creativity, and user understanding that most product managers came here to do.</p>
+      </div>
+    </div>
+
+    <div class="prose-divider" aria-hidden="true"></div>
+
+    <!-- WHAT IT LOOKS LIKE IN PRACTICE -->
+    <div class="prose-section" id="section-in-practice" aria-labelledby="heading-in-practice">
+      <span class="section-eyebrow">What it looks like in practice</span>
+      <h2 class="section-heading" id="heading-in-practice">Abstract descriptions of change are easy to read past.</h2>
+      <div class="prose" style="margin-bottom: 40px;">
+        <p>The following vignettes walk through the stages of a product manager's work, showing what each stage looks like today and how it begins to feel different when AI is part of how the work gets done.</p>
+      </div>
+
+      <!-- Stage 1 -->
+      <div class="stage-block">
+        <div class="stage-header">
+          <div class="stage-num" aria-hidden="true">01</div>
+          <div>
+            <p class="stage-label">Stage one</p>
+            <h3 class="stage-title">Understanding the problem</h3>
+          </div>
+        </div>
+        <div class="stage-body">
+          <p>There are two situations that will feel immediately familiar:</p>
+          <ul class="stage-list">
+            <li>The first is when you sense an opportunity: signals are accumulating across support conversations, user feedback, and industry commentary that something is worth building or changing, but the picture is not yet clear enough to make a confident case for it.</li>
+            <li>The second is when you know something is broken: a feature is underperforming, users are dropping off, or complaints are clustering around a specific experience, and you need to locate the problem precisely enough to act on it.</li>
+          </ul>
+          <p>In both cases, to get to clarity you must pull together information from multiple sources, some of which require engineering to investigate, some of which require data that is incomplete or hard to reproduce, and some of which require conversations with people whose time is not always available when you need it. So, you may find yourself moving forward on a foundation that is thinner than you would like, relying on instinct to fill the gaps.</p>
+          <p>Imagine instead that you are sitting with that signal and rather than scheduling three separate conversations to piece the picture together, you start by asking an AI tool to help you look across the sources you do have access to. What comes back is not a conclusion but a starting point: patterns across the data, the places where the evidence is strong and the places where it is thin, and the questions that the available information cannot yet answer. You disagree with one of the interpretations the AI provides because it does not match what you know from experience. You ask the tool to show you what the competitive landscape looks like around this problem, whether similar products have faced it and how they responded, grounding your thinking in a broader context than you could have assembled quickly on your own.</p>
+          <p>Then you ask a question you might not have thought to ask otherwise: what are the alternative explanations for what you are seeing, and what would you need to look at to rule them out? The answer surfaces two angles you had not considered. One turns out to be a dead end. The other reframes the problem in a way that changes which solution you would prioritize. You walk into the planning conversation with a problem statement that is sharper, better evidenced, and one you can genuinely stand behind, because you had the space and the tools to think it through more rigorously than the day usually allows.</p>
+        </div>
+      </div>
+
+      <div class="callout-insight" role="complementary">
+        <span class="callout-insight-label">What changes at this stage</span>
+        <p>You stop moving forward on thin foundations. The starting point is richer, the gaps in the evidence are visible, and questions you might not have thought to ask on your own get asked before it is too late to act on the answers.</p>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="stage-block">
+        <div class="stage-header">
+          <div class="stage-num" aria-hidden="true">02</div>
+          <div>
+            <p class="stage-label">Stage two</p>
+            <h3 class="stage-title">Deciding what to build</h3>
+          </div>
+        </div>
+        <div class="stage-body">
+          <p>You have a clear enough view of the problem that you are ready to start shaping a solution. In the past this meant sitting down to write a requirements document, circulating it, waiting for engineering to come back with questions, and cycling through that back and forth until everyone had enough shared understanding to move forward. It was not a broken process. It was just slow, and the requirements that came out the other end were only as good as the questions that got asked along the way.</p>
+          <p>Now imagine that conversation happens in your team's chat or on a call, and an AI agent is present throughout. As you and your engineer talk through what you want to build, the agent is not just listening. It is actively participating. It is drafting requirements in real time based on the direction of the conversation, and it is also flagging things you have not discussed yet: non-functional requirements like performance expectations or concurrency limits, user scenarios that fall outside the main flow you have been describing, and potential policy or legal considerations worth raising before the build begins rather than after. Where the AI agent is not confident about what you intended, it surfaces a clarifying question rather than assuming. Where a decision gets made, it notes not just what was decided but the reasoning behind it, building a record that the team can return to months later when someone asks why the product works the way it does.</p>
+          <p>By the end of the conversation, you have a draft with a short list of open items that still need to be resolved, and a clear picture of what is settled and what is not. You and your engineer work through those flags together, closing the ones you can answer immediately and noting the ones that need more investigation. The requirements that come out of that process tend to be more complete than the ones that come out of a document written in isolation, because they were never separated from the conversation that produced them. That same conversation is also where you and your engineer work through how the feature will launch. An AI agent can help you think through the experiment design, such as shaping the hypothesis, suggesting the right metrics, and flagging the guardrails worth putting in place before you go live. By the time you are ready to build, the experiment is already designed and the team is aligned on what success looks like.</p>
+        </div>
+      </div>
+
+      <div class="pull-quote" role="blockquote">
+        <p>"The requirements that come out of that process tend to be more complete than the ones that come out of a document written in isolation, because they were never separated from the conversation that produced them."</p>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="stage-block">
+        <div class="stage-header">
+          <div class="stage-num" aria-hidden="true">03</div>
+          <div>
+            <p class="stage-label">Stage three</p>
+            <h3 class="stage-title">Building and refining</h3>
+          </div>
+        </div>
+        <div class="stage-body">
+          <p>With the requirements in a solid place, you and your engineer are ready to move into execution. You have options for how to proceed. A prototyping agent can spin up something tangible quickly, giving you something concrete to react to before committing to a full build. Or you can move directly into implementation with a coding agent that gets to work on an initial draft, producing commented code throughout so the reasoning behind each decision can be reviewed alongside the output itself.</p>
+          <p>When you sit down with your engineer to go through what the agent has produced, you are not looking at a traditional code review or a demo. You are asking a more fundamental question: is this what we meant? Answering that question is a shared act. The engineer brings a technical read on what the agent produced and why. You bring the user intent and product context. Together, you catch things neither of you would have caught alone. Some issues are small enough that the engineer fixes them directly or asks the agent to make a specific change. Others reveal something more important: the requirements were not as clear as you thought, an assumption you both made was not quite right, or the agent interpreted something in a way that makes technical sense but misses the user intent behind it. In those moments you return to the requirements, sharpen them, and give the agent more context about what you were trying to achieve and where it went wrong. The next version comes back as working code in hours rather than days. More importantly, the conversation you are having along the way is clearer than a document passing between people.</p>
+          <p>When you are both satisfied that what has been built reflects what you set out to build, you are ready to launch. Because you designed the experiment during your earlier planning, you already know exactly how it will roll out, what you are testing, what success looks like, and what would cause you to pull back.</p>
+        </div>
+      </div>
+
+      <div class="callout-insight" role="complementary">
+        <span class="callout-insight-label">The central question of this stage</span>
+        <p>Is this what we meant? That question, answered together by the PM and the engineer, is the work. Not a handoff. Not a review of what was built in a black box. A shared act of checking intent against output, with a feedback loop short enough to do it in hours.</p>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="stage-block">
+        <div class="stage-header">
+          <div class="stage-num" aria-hidden="true">04</div>
+          <div>
+            <p class="stage-label">Stage four</p>
+            <h3 class="stage-title">Learning and iteration</h3>
+          </div>
+        </div>
+        <div class="stage-body">
+          <p>Your feature is live for a defined segment of users, and you are watching closely. The first few days tell you things the experiment cannot yet confirm statistically. You are looking for anything that suggests the experience is not working the way you intended, such as error rates that look unusual, engagement patterns that surprise you, or feedback clustering around something you did not anticipate. One of the most practical benefits of working with AI is being able to catch and respond to problems early, soon after your feature launches. An AI tool is monitoring continuously against the guardrails you set and surfaces anomalies as they emerge. If something looks wrong, you can act on it before it affects more users.</p>
+          <p>As the experiment matures you shift from watching for problems to watching for answers. You no longer have to check manually or wait for an analyst to tell you when the data is ready. The AI tool tracks toward that threshold and tells you when the results are meaningful enough to act on. When that moment arrives, you are not starting from scratch. The framework for reading the results was built into the experiment design from the beginning, so what you are doing is applying your judgment to a picture that is already clear rather than assembling it yourself under time pressure.</p>
+          <p>What you decide to do next, whether to ship fully, iterate on what you learned, or take the experiment in a different direction, feeds directly back into the same process you have just been through. What used to take a sprint or longer to learn and iterate on is now happening in days. Over time that changes how you think about building. You are not launching things and waiting to find out if you were right. The feedback loop is short enough that each iteration brings you closer to what your users actually need, and you can act on that quickly.</p>
+        </div>
+      </div>
+
+      <div class="callout-insight" role="complementary">
+        <span class="callout-insight-label">What this changes about launch</span>
+        <p>Launch stops being the end of delivery and becomes the beginning of a learning cycle. The framework for reading results was built into the experiment design from the start. When the data is ready, you are applying judgment to a clear picture, not assembling one under pressure.</p>
+      </div>
+
+    </div><!-- /section-in-practice -->
+
+    <div class="prose-divider" aria-hidden="true"></div>
+
+    <!-- THE KEY SHIFTS -->
+    <div class="prose-section" id="section-key-shifts" aria-labelledby="heading-key-shifts">
+      <span class="section-eyebrow">The key shifts</span>
+      <h2 class="section-heading" id="heading-key-shifts">What the structural change actually requires of you.</h2>
+
+      <div role="list">
+
+        <div class="shift-item" role="listitem">
+          <p class="shift-item-num">01</p>
+          <div>
+            <h3 class="shift-item-title">The premium on good judgment</h3>
+            <p>A meaningful share of your effort today goes into work that is fundamentally about keeping things moving: writing the ticket, preparing the deck, driving alignment toward a decision. These are real contributions, but they are primarily about moving information and maintaining momentum rather than deciding what is right. As AI takes on more of that layer, the premium shifts almost entirely to the quality of thinking and decision-making. Which problem is worth solving, and which one just feels urgent? What does the user need that they have not quite been able to articulate? When two reasonable options are on the table, which one do you choose, and what does your reasoning say about what you believe? These are questions AI can inform but cannot answer. They require judgment grounded in business context and connected to a clear sense of what the product is trying to accomplish, and that is why developing that judgment is the most important investment you can make right now.</p>
+          </div>
+        </div>
+
+        <div class="callout-insight" role="complementary">
+          <span class="callout-insight-label">The gap that opens up</span>
+          <p>When the structural overhead disappears, the difference between PMs who think clearly and those who don't becomes more visible, more quickly. There is less noise in the way. The quality of judgment is what the work runs on.</p>
+        </div>
+
+        <div class="shift-item" role="listitem">
+          <p class="shift-item-num">02</p>
+          <div>
+            <h3 class="shift-item-title">From generation to curation</h3>
+            <p>When a tool can produce multiple versions of a product spec, several framings of a research synthesis, or a range of approaches to a prioritization problem, the bottleneck stops being the ability to produce those things and starts being the ability to judge them. Which framing is right? Which approach fits the team's context and goals? Where is the AI's reasoning sound, and where has it missed something only someone with deeper context would catch? Editorial judgment has always been part of the PM's work, but it has historically been exercised at the margins. As AI takes on more of the generative work, curation becomes a primary skill, and those who can evaluate AI output with genuine rigor will consistently produce better outcomes than those who accept the first plausible output.</p>
+          </div>
+        </div>
+
+        <div class="shift-item" role="listitem">
+          <p class="shift-item-num">03</p>
+          <div>
+            <h3 class="shift-item-title">Systems thinking and orchestration</h3>
+            <p>As AI agents take on more of the execution work, your role begins to resemble something closer to an architect than a coordinator. Each agent has a defined scope: one synthesizes research, another drafts requirements, another generates and revises code, another monitors post-launch signal. Your job is to understand how those agents relate to each other, where the handoffs happen, where gaps or conflicts can emerge, and how the overall system produces the outcome you intended. This is not unlike the thinking required in microservices architecture, where no single service does everything and the system only works when someone understands the dependencies, the interfaces, and the failure modes across all of them. When the mechanical work is largely automated, the quality of your thinking about how the system is designed and how you intervene when something goes wrong is what determines whether the work produces the right outcome.</p>
+          </div>
+        </div>
+
+        <div class="shift-item" role="listitem">
+          <p class="shift-item-num">04</p>
+          <div>
+            <h3 class="shift-item-title">Speed, iteration, and the relationship with risk</h3>
+            <p>Faster delivery cycles create real opportunity, and they also change your relationship with risk. Slower processes gave you something valuable alongside their frustrations: time between a decision and its consequences, time to reconsider an assumption before it became a shipped feature, time for second thoughts to surface before they became expensive problems. When cycle times compress, those natural checkpoints disappear, and with them the time to reflect and reconsider. You have to build that in yourself. The product managers who navigate this well make confident decisions knowing the information is incomplete, design experiments that give reliable signal quickly, and treat each release as the beginning of a learning cycle rather than the end of a delivery one. Staying current in this environment also requires sustained engagement. The tools are changing, the norms are forming, and the way teams work is being reinvented continuously. Accepting that staying current is now part of the job, and finding a way to make that feel energizing, is itself a skill worth developing.</p>
+          </div>
+        </div>
+
+        <div class="callout-insight" role="complementary">
+          <span class="callout-insight-label">The thing speed takes away</span>
+          <p>Slower processes gave you time for free. Time to reconsider an assumption before it became a shipped feature. Time for second thoughts to surface before they became expensive problems. When cycle times compress, those natural checkpoints disappear. The PMs who navigate this well build deliberate reflection into the work. They do not wait for it to happen on its own.</p>
+        </div>
+
+        <div class="shift-item" role="listitem">
+          <p class="shift-item-num">05</p>
+          <div>
+            <h3 class="shift-item-title">Autonomy, accountability, and the governance instinct</h3>
+            <p>As AI systems take on more autonomous actions within product workflows, your accountability expands in ways that are not always obvious at first. Governance, meaning the decisions about how AI systems are designed, constrained, and monitored within your product, is becoming a core product responsibility rather than a compliance afterthought. An automated workflow that produces a biased outcome, a feature that erodes user trust, a release that creates a compliance issue: these trace back to the people who defined the goals, set the parameters, and chose to deploy the system. The instinct to ask what could go wrong, and for whom, needs to be present from the beginning of the work. Developing that instinct and building it into how you work rather than treating it as a checklist item is one of the more important things this shift asks of you.</p>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /section-key-shifts -->
+
+    <div class="prose-divider" aria-hidden="true"></div>
+
+    <!-- WHAT DOESN'T CHANGE -->
+    <div class="prose-section" id="section-what-stays" aria-labelledby="heading-what-stays">
+      <span class="section-eyebrow">What doesn't change</span>
+      <h2 class="section-heading" id="heading-what-stays">Some of what makes a great product manager great is not something AI can reach.</h2>
+      <div class="prose">
+        <p>The ability to understand what someone actually needs, not what they say they need or what the data suggests, but what would genuinely improve their experience, requires being curious about people, sitting with ambiguity about motivation and behavior, and resisting the temptation to reach for the most convenient explanation. That kind of user empathy has always separated good product managers from great ones, and AI does not have access to the context it depends on. The same is true of strategic clarity, the ability to look at competing priorities and identify the right direction, and of the capacity to absorb uncertainty and make a call when the path forward is not obvious. Those moments are not going anywhere. The trust you build with the people around you, engineers, designers, stakeholders, and users, is also something only you can build. AI can support the quality of your decisions. It cannot build the relationships that make them land.</p>
+      </div>
+
+      <div class="callout-insight" role="complementary">
+        <span class="callout-insight-label">The three things that endure</span>
+        <p><strong>User empathy</strong> is the ability to understand what someone actually needs, not just what they say or what the data suggests.<br><br>
+        <strong>Strategic clarity</strong> is the capacity to absorb uncertainty and make a call when the path forward is not obvious.<br><br>
+        <strong>Trust</strong> is the relationships you build with engineers, designers, stakeholders, and users. AI can support the quality of your decisions. It cannot build the relationships that make them land.</p>
+      </div>
+    </div>
+
+    <div class="prose-divider" aria-hidden="true"></div>
+
+    <!-- THE PERSONAL ASK -->
+    <div class="prose-section" id="section-personal-ask" aria-labelledby="heading-personal-ask">
+      <span class="section-eyebrow">The personal ask</span>
+      <h2 class="section-heading" id="heading-personal-ask">This shift requires something active from you.</h2>
+      <div class="prose">
+        <p>Engaging with this shift well requires something active from us. It asks you to experiment with tools before feeling fully ready, to build new instincts while the norms around them are still forming, and to stay genuinely curious in conditions where the right approach is not yet clear.</p>
+        <p>As AI systems take on more of the analytical and generative work, it can become easy to let them do too much of the thinking as well. Those who will navigate this well are those who stay genuinely in charge of the reasoning, use AI to go further than they could alone, and treat the quality of their own thinking as something worth protecting.</p>
+        <p>For many product managers who have made this shift, the work feels genuinely more interesting, more creative, and more directly connected to the impact they set out to have. The satisfaction of seeing an idea take shape quickly, testing a hypothesis and finding out if you were right within days, watching something go from a conversation to working code within the same session. That is worth pursuing, and it is worth the effort the transition requires to get there.</p>
+        <p>If you are ready to engage, here are three things worth doing now:</p>
+      </div>
+
+      <div class="action-list" role="list">
+        <div class="action-item" role="listitem">
+          <p class="action-num">01</p>
+          <div>
+            <p class="action-title">Adopt a growth mindset toward AI</p>
+            <p class="action-desc">Start using AI tools in your daily work. Try new things with them. Some will not work, and that is part of the process. The goal is to build instinct through experience, and experience only comes from doing.</p>
+          </div>
+        </div>
+        <div class="action-item" role="listitem">
+          <p class="action-num">02</p>
+          <div>
+            <p class="action-title">Find your people</p>
+            <p class="action-desc">Identify colleagues or peers you trust who are on the same journey. They do not need to be ahead of you. What matters is a shared willingness to learn, experiment, and compare notes along the way. That kind of community makes the transition faster and considerably less isolating.</p>
+          </div>
+        </div>
+        <div class="action-item" role="listitem">
+          <p class="action-num">03</p>
+          <div>
+            <p class="action-title">Know where you stand</p>
+            <p class="action-desc">Take an honest look at your current AI fluency and identify where the gaps are. The AI Fluency Framework for Product Managers is designed to help you do exactly that. Use it as a starting point, then make a plan to address what you find.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pull-quote" role="blockquote">
+        <p>"The overhead that has consumed so much of our time and energy is beginning to lift, and what tends to replace it is a version of this work that is more strategic, more creative, and more directly focused on the things that have always made great product management valuable."</p>
+      </div>
+
+      <div class="prose">
+        <p>For those who engage with the shift thoughtfully, the work ahead is likely to be more interesting and more impactful than what came before.</p>
+      </div>
+
+      <!-- CTA BLOCK -->
+      <div class="cta-block">
+        <h2 class="cta-block-title">Ready to look at <em>where you stand?</em></h2>
+        <p class="cta-block-sub">A framework for developing the AI skills described in this document is available in the AI Fluency Framework for Product Managers.</p>
+        <a href="ai_fluency_framework.html" class="cta-block-btn">Explore the AI Fluency Framework →</a>
+      </div>
+
+    </div><!-- /section-personal-ask -->
+
+  </article>
+
+</div><!-- /page-layout -->
+
+<!-- AUTHOR BIO -->
+<section class="author-section" aria-labelledby="author-heading">
+  <div class="author-inner">
+    <div class="author-avatar">
+      <img src="data:image/jpeg;base64,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" alt="Adrian Chiu">
+    </div>
+    <div>
+      <p class="author-label">About the author</p>
+      <h2 class="author-name" id="author-heading">Adrian Chiu</h2>
+      <p class="author-bio">Adrian Chiu is a product executive with over 25 years of experience across media and technology, with deep expertise in advertising technology, streaming, usability, experimentation, and monetization. He has held leadership roles at Paramount, Hulu, Microsoft, and aQuantive, where he has built and scaled products that power large, global digital businesses. He cares deeply about product management and the people who do this work and is a builder at heart, drawn to turning ideas into real, working systems, and to helping product managers grow into thoughtful, high-ownership leaders.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-left">AI Fluency: The Future of Work for Product Managers &nbsp;·&nbsp; AI Fluency Series &nbsp;·&nbsp; © 2026 Adrian Chiu</p>
+  <p class="footer-right"><a href="index.html">← Back to the interactive overview</a></p>
+</footer>
+
+<script>
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  function track(eventName, params) {
+    if (typeof gtag === 'function') gtag('event', eventName, params);
+  }
+
+  // ── Reading progress bar ──────────────────────────────────────────────────
+  const prog = document.getElementById('readingProgress');
+
+  // ── Scroll depth tracking ─────────────────────────────────────────────────
+  // Fires once each at 25 / 50 / 75 / 90 / 100 %
+  const depthsFired = new Set();
+  const depthMilestones = [25, 50, 75, 90, 100];
+
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+
+    // Reading progress bar
+    prog.style.width = pct + '%';
+    prog.setAttribute('aria-valuenow', Math.round(pct));
+
+    // Depth events
+    depthMilestones.forEach(milestone => {
+      if (!depthsFired.has(milestone) && pct >= milestone) {
+        depthsFired.add(milestone);
+        track('scroll_depth', {
+          page: 'full_document',
+          percent: milestone
+        });
+      }
+    });
+  }, { passive: true });
+
+  // ── Time-on-page (engaged reading) ────────────────────────────────────────
+  const timeMilestones = [30, 60, 180, 300];
+  timeMilestones.forEach(seconds => {
+    setTimeout(() => {
+      if (!document.hidden) {
+        track('engaged_reading', {
+          page: 'full_document',
+          seconds_on_page: seconds
+        });
+      }
+    }, seconds * 1000);
+  });
+
+  // ── Conversion: click "Explore the AI Fluency Framework" ─────────────────
+  document.querySelectorAll('a[href="ai_fluency_framework.html"]').forEach(link => {
+    link.addEventListener('click', () => {
+      track('explore_framework_click', {
+        page: 'full_document',
+        link_location: link.classList.contains('cta-block-btn') ? 'cta_block' : 'sidebar'
+      });
+    });
+  });
+
+  // ── Back-navigation: click "Back to interactive overview" ─────────────────
+  document.querySelectorAll('a[href="index.html"]').forEach(link => {
+    link.addEventListener('click', () => {
+      track('back_to_overview_click', {
+        page: 'full_document',
+        link_location: link.classList.contains('top-bar-back') ? 'top_bar' : 'footer'
+      });
+    });
+  });
+
+  // ── ToC section visibility ────────────────────────────────────────────────
+  const sections = [
+    'section-purpose', 'section-introduction', 'section-in-practice',
+    'section-key-shifts', 'section-what-stays', 'section-personal-ask'
+  ];
+
+  // Scroll-based approach: finds the last section whose top edge has passed
+  // the trigger line (120px from top of viewport), making it reliable for
+  // sections of any height — including very long ones.
+  function updateActiveTocItem() {
+    const triggerLine = window.scrollY + 120;
+    let activeId = sections[0];
+
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const sectionTop = el.getBoundingClientRect().top + window.scrollY;
+      if (sectionTop <= triggerLine) activeId = id;
+    });
+
+    document.querySelectorAll('.toc-link').forEach(l => {
+      l.classList.remove('active'); l.removeAttribute('aria-current');
+    });
+    const active = document.querySelector(`.toc-link[data-target="${activeId}"]`);
+    if (active) { active.classList.add('active'); active.setAttribute('aria-current', 'true'); }
+  }
+
+  window.addEventListener('scroll', updateActiveTocItem, { passive: true });
+  updateActiveTocItem(); // set initial state on page load
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AI Fluency Framework for Product Managers</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --navy:   #01082E;
+    --blue1:  #2A3D7A;
+    --blue2:  #3D5BA8;
+    --white:  #FFFFFF;
+    --light:  #F1F1F1;
+    --text:   #111827;
+    --muted:  #374151;
+    --bg:     #F6F9FC;
+    --card:   #FFFFFF;
+    --border: #C9D3DC;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SKIP LINK ── */
+  .skip-link {
+    position: absolute; top: -999px; left: 0;
+    background: var(--blue2); color: white;
+    padding: 8px 16px; font-size: 14px; z-index: 9999;
+    text-decoration: none; border-radius: 0 0 4px 0;
+  }
+  .skip-link:focus { top: 0; }
+
+  /* ── READING PROGRESS ── */
+  #readingProgress {
+    position: fixed; top: 0; left: 0;
+    height: 3px; background: var(--blue2);
+    z-index: 9999; transition: width 0.1s linear;
+    pointer-events: none; width: 0%;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,91,168,0.22) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -120px; left: 25%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,91,168,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-series {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #A8C0F0; margin-bottom: 10px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #6A7AB0; margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 4.8vw, 76px);
+    font-weight: 700; color: var(--white);
+    line-height: 1.06; max-width: 860px; margin-bottom: 32px;
+  }
+  .hero h1 em { font-style: italic; color: #A8C0F0; }
+  .hero-sub {
+    font-size: 18px; font-weight: 300;
+    color: #B0BEE0; max-width: 560px; margin-bottom: 48px; line-height: 1.65;
+  }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-btn {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 14px 28px; border-radius: 6px;
+    text-decoration: none; cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    border: none; font-family: 'DM Sans', sans-serif; display: inline-block;
+  }
+  .hero-btn-solid { background: var(--blue2); color: white; border: 1.5px solid var(--blue2); }
+  .hero-btn-solid:hover { background: #4A72C0; border-color: #4A72C0; }
+  .hero-btn-outline { background: transparent; border: 1.5px solid rgba(168,192,240,0.5); color: #A8C0F0; }
+  .hero-btn-outline:hover { background: rgba(168,192,240,0.12); border-color: #A8C0F0; }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 60px;
+    display: flex; align-items: center; gap: 12px;
+    color: #6A7AB0; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; animation: pulse 2.2s ease-in-out infinite;
+  }
+  .hero-scroll-line { width: 36px; height: 1px; background: #6A7AB0; }
+  .hero-stat-row {
+    display: flex; gap: 40px; margin-top: 56px; margin-bottom: 0;
+    border-top: 1px solid rgba(61,91,168,0.25); padding-top: 32px;
+  }
+  .hero-stat { display: flex; flex-direction: column; gap: 4px; }
+  .hero-stat-num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px; font-weight: 700; color: var(--white); line-height: 1;
+  }
+  .hero-stat-label { font-size: 11px; color: #6A7AB0; letter-spacing: 0.1em; text-transform: uppercase; }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky; top: 0;
+    background: rgba(1,8,46,0.97); backdrop-filter: blur(8px);
+    z-index: 100; padding: 0 60px;
+    display: flex; align-items: center;
+    border-bottom: 1px solid rgba(61,91,168,0.35);
+  }
+  .nav-item {
+    padding: 16px 16px; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: #8A9ED0; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    background: none; border-top: none; border-left: none; border-right: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-item:hover, .nav-item.active { color: var(--white); border-bottom-color: var(--blue2); }
+  .nav-spacer { flex: 1; }
+  .nav-cta {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 8px 18px; border-radius: 4px;
+    background: var(--blue2); color: white;
+    border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; white-space: nowrap; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: #4A72C0; }
+
+  /* ── SECTION LAYOUT ── */
+  section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--blue2); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 3.6vw, 46px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.15; margin-bottom: 24px; max-width: 700px;
+  }
+  .section-lead {
+    font-size: 17px; font-weight: 400; color: var(--muted);
+    max-width: 640px; margin-bottom: 52px; line-height: 1.75;
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--blue1) 0%, transparent 60%);
+  }
+
+  /* ── OVERVIEW SPLIT ── */
+  .overview-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 4px;
+  }
+  .overview-col { border-radius: 12px; padding: 36px; }
+  .overview-col-light { background: #EEF2F7; border: 1px solid #B8C4D0; }
+  .overview-col-dark  { background: var(--navy); }
+  .col-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .col-label-light { color: #4A5568; }
+  .col-label-dark  { color: #A8C0F0; }
+  .col-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin-bottom: 14px; font-size: 15px;
+  }
+  .col-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+  .col-dot-muted { background: #7A8A96; }
+  .col-dot-blue  { background: var(--blue2); }
+  .col-item-dark  { color: #2D3748; }
+  .col-item-light { color: #C5CCE8; }
+
+  /* ── INLINE CTA CARD ── */
+  .inline-cta {
+    background: linear-gradient(135deg, #01082E 0%, #0A1055 100%);
+    border: 1px solid rgba(61,91,168,0.4);
+    border-radius: 12px; padding: 36px 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 32px; margin-top: 48px;
+  }
+  .inline-cta-text h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px; font-weight: 700; color: white; margin-bottom: 8px; line-height: 1.3;
+  }
+  .inline-cta-text p { font-size: 14px; color: #9AACD8; line-height: 1.6; max-width: 480px; }
+  .inline-cta-btn {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 14px 28px; border-radius: 6px;
+    background: var(--blue2); color: white;
+    border: none; cursor: pointer; white-space: nowrap;
+    font-family: 'DM Sans', sans-serif; text-decoration: none;
+    transition: background 0.2s; display: inline-block;
+  }
+  .inline-cta-btn:hover { background: #4A72C0; }
+
+  /* ── DARK SECTION ── */
+  .section-dark { background: var(--navy); padding: 100px 0; }
+  .section-dark-inner { max-width: 1100px; margin: 0 auto; padding: 0 60px; }
+  .section-dark .section-title { color: var(--white); }
+  .section-dark .section-lead  { color: #9AACD8; }
+
+  /* ── SENIORITY GRID ── */
+  .seniority-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 4px;
+  }
+  .seniority-card {
+    border-radius: 12px; padding: 32px 28px;
+    border: 1px solid var(--border); background: var(--card);
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .seniority-card.visible { opacity: 1; transform: translateY(0); }
+  .seniority-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+  .seniority-card:nth-child(1)::before { background: var(--blue2); }
+  .seniority-card:nth-child(2)::before { background: #7F77DD; }
+  .seniority-card:nth-child(3)::before { background: #EF9F27; }
+  .seniority-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .seniority-card:nth-child(1) .seniority-label { color: var(--blue2); }
+  .seniority-card:nth-child(2) .seniority-label { color: #5A52BB; }
+  .seniority-card:nth-child(3) .seniority-label { color: #A05C00; }
+  .seniority-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 12px; line-height: 1.3;
+  }
+  .seniority-years { font-size: 12px; color: #7A8A98; margin-bottom: 14px; font-style: italic; }
+  .seniority-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* ── HOW TO USE NOTE ── */
+  .use-note {
+    background: #EEF2F7; border: 1px solid #B8C4D0;
+    border-left: 4px solid var(--blue2);
+    border-radius: 0 8px 8px 0; padding: 20px 24px;
+    margin-top: 32px; font-size: 14px; color: var(--muted); line-height: 1.65;
+  }
+  .use-note strong { color: var(--navy); }
+
+  /* ── DOMAINS GRID ── */
+  .domains-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 4px;
+  }
+  .domain-card {
+    border-radius: 12px; overflow: hidden;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0; transform: translateY(24px);
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+  }
+  .domain-card.visible { opacity: 1; transform: translateY(0); }
+  .domain-card:hover { transform: translateY(-5px); box-shadow: 0 10px 36px rgba(1,8,46,0.14); }
+  .domain-card-header {
+    background: var(--navy); padding: 22px 24px 20px;
+    min-height: 150px; display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .domain-card-header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0;
+  }
+  .domain-card-num {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .domain-card-icon-badge {
+    width: 38px; height: 38px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .domain-card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 17px; font-weight: 700; line-height: 1.3; color: #fff;
+    padding: 0;
+  }
+  .domain-card-body { background: white; padding: 18px 28px 24px; flex: 1; }
+  .domain-card-short { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 16px; }
+  .domain-card-meta {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .domain-card-count {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 6px;
+  }
+  .domain-card-count-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .domain-card-explore {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+    text-transform: uppercase; display: flex; align-items: center; gap: 6px;
+    transition: gap 0.2s; text-decoration: none;
+  }
+  .domain-card:hover .domain-card-explore { gap: 10px; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(1,8,46,0.72); backdrop-filter: blur(5px);
+    z-index: 200; opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--card); border-radius: 16px;
+    max-width: 780px; width: 100%; max-height: 88vh; overflow-y: auto;
+    transform: translateY(32px) scale(0.97);
+    transition: transform 0.3s ease; position: relative;
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+  .modal-header {
+    padding: 32px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--card);
+    z-index: 1; border-radius: 16px 16px 0 0;
+  }
+  .modal-header-accent { height: 4px; border-radius: 4px; margin-bottom: 24px; }
+  .modal-header-row {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  }
+  .modal-domain-num {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .modal-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px; font-weight: 700; color: var(--navy);
+    line-height: 1.2; margin-bottom: 10px;
+  }
+  .modal-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .modal-close {
+    background: #EEF2F7; border: none; border-radius: 50%;
+    width: 36px; height: 36px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 18px; color: var(--navy);
+    transition: background 0.2s; line-height: 1;
+  }
+  .modal-close:hover { background: #D5DDE8; }
+  .modal-body { padding: 24px 36px 36px; }
+  .modal-skills-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  }
+
+  /* ── SKILL ACCORDION ── */
+  .skill-row {
+    border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 12px; overflow: hidden;
+  }
+  .skill-row-header {
+    padding: 16px 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--card); gap: 14px; transition: background 0.15s;
+  }
+  .skill-row-header:hover { background: #F8FAFC; }
+  .skill-row-left { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 0; }
+  .skill-row-name { font-size: 15px; font-weight: 500; color: var(--navy); flex: 1; }
+  .skill-badges { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+  .skill-badge {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 9px; border-radius: 100px;
+    white-space: nowrap;
+  }
+  .badge-mid    { background: #DCE8FA; color: #0A2A7C; }
+  .badge-senior { background: #EEEDFE; color: #3C3489; }
+  .badge-exec   { background: #FAEEDA; color: #7A4500; }
+  .skill-chevron { font-size: 11px; color: #9AACBC; transition: transform 0.2s; flex-shrink: 0; }
+  .skill-row.expanded .skill-chevron { transform: rotate(180deg); }
+  .skill-row-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .skill-row.expanded .skill-row-body { max-height: 400px; }
+  .skill-row-body-inner {
+    padding: 16px 20px 18px;
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── SKILLS FILTER SECTION ── */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 28px; align-items: center;
+  }
+  .filter-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-right: 4px;
+  }
+  .filter-btn {
+    font-size: 12px; font-weight: 500;
+    padding: 7px 14px; border-radius: 100px;
+    border: 1.5px solid var(--border); background: white; color: var(--muted);
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .filter-btn:hover { border-color: var(--blue2); color: var(--navy); }
+  .filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+  .filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .filter-divider { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+  .skills-table { display: flex; flex-direction: column; gap: 10px; }
+  .skills-col-headers {
+    display: grid; grid-template-columns: 160px 1fr 140px; gap: 20px;
+    padding: 0 20px 8px 3px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .skills-col-headers span:first-child { padding-left: 20px; }
+  .skills-trow {
+    background: white; border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px 18px 0;
+    display: grid; grid-template-columns: 160px 1fr 140px;
+    gap: 20px; align-items: start;
+    transition: opacity 0.25s, transform 0.25s;
+    overflow: hidden;
+  }
+  .skills-trow.hidden { display: none; }
+  .skills-trow-domain {
+    display: flex; padding: 2px 0 0 20px;
+  }
+  .skills-trow-dchip {
+    display: inline-flex; flex-direction: column; gap: 3px;
+    padding: 7px 10px; border-radius: 6px; align-self: flex-start;
+  }
+  .skills-trow-dchip-num {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; line-height: 1;
+  }
+  .skills-trow-dchip-name {
+    font-size: 12px; font-weight: 500; line-height: 1.3; letter-spacing: 0;
+  }
+  .skills-trow-skill {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 15px; font-weight: 500; color: var(--navy); margin-bottom: 6px;
+  }
+  .skills-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+  }
+  .skills-trow-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .skills-trow-badges { display: flex; flex-direction: column; gap: 5px; }
+
+  /* ── FLUENCY MODEL ── */
+  .fluency-grid {
+    display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; row-gap: 0; margin-top: 4px; align-items: start;
+  }
+  .fluency-col-head {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; margin-bottom: 12px; padding-bottom: 16px;
+    border-bottom: 2px solid; display: flex; align-items: center; gap: 10px;
+  }
+  .fluency-col-head-eff { color: var(--blue2); border-color: var(--blue2); }
+  .fluency-col-head-opp { color: #D4537E; border-color: #D4537E; }
+  .fluency-col-sub { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 24px; }
+  .fluency-level {
+    border: 1.5px solid var(--border); border-radius: 10px;
+    margin-bottom: 10px; cursor: pointer; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .fluency-level:hover { border-color: #aac; }
+  .fluency-level.fluency-eff:hover, .fluency-level.fluency-eff.active { border-color: var(--blue2); }
+  .fluency-level.fluency-opp:hover, .fluency-level.fluency-opp.active { border-color: #D4537E; }
+  .fluency-level-header {
+    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .fluency-level-name {
+    font-size: 14px; font-weight: 500; color: var(--navy); display: flex; align-items: center; gap: 10px;
+  }
+  .fluency-level-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .fluency-level.fluency-eff .fluency-level-dot { background: var(--blue2); }
+  .fluency-level.fluency-opp .fluency-level-dot { background: #D4537E; }
+  .fluency-level-chevron { font-size: 11px; color: #9AACBC; transition: transform 0.2s; }
+  .fluency-level.active .fluency-level-chevron { transform: rotate(180deg); }
+  .fluency-level-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .fluency-level.active .fluency-level-body { max-height: 250px; }
+  .fluency-level-inner {
+    padding: 0 18px 18px; font-size: 13px; color: var(--muted); line-height: 1.7;
+    border-top: 1px solid var(--border); padding-top: 14px;
+  }
+  .fluency-note {
+    background: #EEF2F7; border: 1px solid #B8C4D0;
+    border-radius: 10px; padding: 20px 24px;
+    margin-top: 28px; font-size: 14px; color: var(--muted); line-height: 1.65; grid-column: 1 / -1;
+  }
+  .fluency-note strong { color: var(--navy); }
+
+  /* ── SHIFTS GRID ── */
+  .shifts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 44px; }
+  .shift-card {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(61,91,168,0.35);
+    border-radius: 10px; padding: 28px 32px;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+  }
+  .shift-card.visible { opacity: 1; transform: translateY(0); }
+  .shift-card:hover { background: rgba(61,91,168,0.14); border-color: rgba(61,91,168,0.6); }
+  .shift-num { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; color: #A8C0F0; margin-bottom: 10px; }
+  .shift-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; line-height: 1.3;
+  }
+  .shift-desc { font-size: 14px; color: #9AACD8; line-height: 1.65; }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    background: var(--navy); padding: 120px 60px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(61,91,168,0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 3.8vw, 48px); font-weight: 700;
+    color: var(--white); line-height: 1.15; max-width: 700px; margin: 0 auto 20px;
+  }
+  .cta-title em { font-style: italic; color: #A8C0F0; }
+  .cta-byline {
+    font-size: 17px; color: #8A9ED0; max-width: 580px; margin: 0 auto 52px; line-height: 1.75;
+  }
+  .cta-steps {
+    display: flex; flex-direction: column; gap: 0;
+    max-width: 620px; margin: 0 auto 48px; text-align: left;
+  }
+  .cta-step {
+    display: flex; align-items: flex-start; gap: 20px;
+    padding: 24px 0; border-bottom: 1px solid rgba(61,91,168,0.25);
+    opacity: 0; transform: translateX(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .cta-step:last-child { border-bottom: none; }
+  .cta-step.visible { opacity: 1; transform: translateX(0); }
+  .cta-step-num {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+    color: #A8C0F0; padding-top: 4px; min-width: 24px;
+  }
+  .cta-step-title { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+  .cta-step-desc  { font-size: 14px; color: #9AACD8; line-height: 1.55; }
+  .cta-buttons {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  }
+  .cta-btn {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 14px 28px; border-radius: 6px;
+    text-decoration: none; transition: all 0.2s; display: inline-block;
+  }
+  .cta-btn-outline { border: 1.5px solid #A8C0F0; color: #A8C0F0; background: transparent; }
+  .cta-btn-outline:hover { background: #A8C0F0; color: var(--navy); border-color: #A8C0F0; }
+  .cta-btn-solid { background: var(--blue2); color: white; border: 1.5px solid var(--blue2); }
+  .cta-btn-solid:hover { background: #4A72C0; border-color: #4A72C0; }
+
+  /* ── AUTHOR ── */
+  .author-section { background: #EEF2F7; border-top: 1px solid var(--border); padding: 72px 60px; }
+  .author-inner {
+    max-width: 780px; margin: 0 auto;
+    display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: start;
+  }
+  .author-avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--blue2); overflow: hidden; flex-shrink: 0; }
+  .author-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
+  .author-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue2); margin-bottom: 8px; }
+  .author-name { font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+  .author-bio { font-size: 15px; color: var(--muted); line-height: 1.75; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #000208; padding: 36px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-left  { font-size: 12px; color: #3A5060; }
+  .footer-right { font-size: 12px; color: #3A5060; font-style: italic; }
+  .footer-right a { color: #5A78B0; text-decoration: underline; }
+  .footer-right a:hover { color: #A8C0F0; }
+
+  /* ── FADE-UP ── */
+  .fade-up {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .domains-grid { grid-template-columns: 1fr 1fr; }
+    .fluency-grid { grid-template-columns: 1fr; }
+    .shifts-grid  { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    section, .hero, .cta-section, .author-section, footer, .section-dark-inner { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: clamp(24px, 7.5vw, 44px); }
+    .overview-split, .seniority-grid, .domains-grid { grid-template-columns: 1fr; }
+    .sticky-nav { padding: 0 8px; overflow-x: auto; }
+    .nav-item { font-size: 10px; padding: 14px 10px; letter-spacing: 0.06em; }
+    .nav-cta { font-size: 10px; padding: 7px 12px; white-space: nowrap; }
+    .skills-trow { grid-template-columns: 1fr; }
+    .inline-cta { flex-direction: column; text-align: center; }
+    .author-inner { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-stat-row { gap: 24px; flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, .fade-up, .domain-card, .seniority-card, .shift-card, .cta-step {
+      animation: none !important; transition: none !important;
+      opacity: 1 !important; transform: none !important;
+    }
+  }
+</style>
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS
+       GA4 Measurement ID  → G-56ZT9PQPX6
+       Clarity Project ID  → wlpkye7wf6
+  ══════════════════════════════════════════════ -->
+
+  <!-- Google tag (gtag.js) — GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-56ZT9PQPX6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-56ZT9PQPX6', {
+      page_title: 'AI Fluency Framework for Product Managers',
+      page_location: window.location.href
+    });
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","wlpkye7wf6");
+  </script>
+
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="readingProgress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- ═══════════════════════════════════════ HERO ═══════════════════════════════════════ -->
+<header class="hero" id="top">
+  <p class="hero-series">AI Fluency Series</p>
+  <h1>AI Fluency: A Framework<br>for <em>Product Managers</em></h1>
+  <p class="hero-sub">Six domains. Twenty-two skills. Two dimensions of growth. A practical map for how product managers thrive in an AI-augmented world.</p>
+  <p class="hero-eyebrow">By Adrian Chiu</p>
+  <div class="hero-btns">
+    <a href="#domains-section" class="hero-btn hero-btn-solid" onclick="navTo('domains-section'); return false;">Explore the Six Domains →</a>
+    <a href="assessment_landing.html" class="hero-btn hero-btn-outline">Take the Bearing Assessment</a>
+  </div>
+  <div class="hero-stat-row" aria-hidden="true">
+    <div class="hero-stat"><div class="hero-stat-num">6</div><div class="hero-stat-label">Domains</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">22</div><div class="hero-stat-label">Skills</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Seniority levels</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">2</div><div class="hero-stat-label">Growth dimensions</div></div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-line"></div>
+    scroll to explore
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════ STICKY NAV ═══════════════════════════════════════ -->
+<nav class="sticky-nav" aria-label="Page sections" id="stickyNav">
+  <button class="nav-item active" data-section="overview" onclick="navTo('overview-section')">Overview</button>
+  <button class="nav-item" data-section="how-to-use" onclick="navTo('how-to-use-section')">How to Use</button>
+  <button class="nav-item" data-section="domains" onclick="navTo('domains-section')">Six Domains</button>
+  <button class="nav-item" data-section="skills" onclick="navTo('skills-section')">Skills</button>
+  <button class="nav-item" data-section="fluency" onclick="navTo('fluency-section')">Fluency Model</button>
+  <button class="nav-item" data-section="cta" onclick="navTo('cta-section')">Where to Start</button>
+  <div class="nav-spacer"></div>
+  <a href="assessment_landing.html" class="nav-cta">Take the Bearing Assessment →</a>
+</nav>
+
+<!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════ -->
+<main id="main-content">
+
+  <!-- OVERVIEW -->
+  <section id="overview-section" aria-labelledby="overview-heading">
+    <p class="section-eyebrow fade-up">About the Framework</p>
+    <h2 class="section-title fade-up" id="overview-heading">A portable core for how PMs work, not just what they build.</h2>
+    <p class="section-lead fade-up">This framework defines the skills product managers and product executives need to thrive as AI agents become integrated into how product work gets done. It is organized into six domains covering the full scope of modern PM responsibilities, with skills differentiated by seniority level — designed as a living reference for career development and organizational capability building.</p>
+
+    <div class="overview-split fade-up" role="region" aria-label="What this framework covers">
+      <div class="overview-col overview-col-light">
+        <p class="col-label col-label-light">What this framework covers</p>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>How PMs direct AI agents in the product development workflow</div>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Skills for accessing, interpreting, and acting on data independently</div>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Higher-order strategic judgment as delivery pace accelerates</div>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Discovery, research, and market intelligence at AI scale</div>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Shipping and coordinating in high-velocity delivery environments</div>
+        <div class="col-item col-item-dark"><div class="col-dot col-dot-muted" aria-hidden="true"></div>Executive responsibilities around org design, ethics, and AI governance</div>
+      </div>
+      <div class="overview-col overview-col-dark">
+        <p class="col-label col-label-dark">What stays irreducibly human</p>
+        <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Genuine empathy for what users actually need, not just what they say</div>
+        <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Strategic clarity when competing priorities pull in different directions</div>
+        <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>The trust built with engineers, designers, and stakeholders</div>
+        <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Sound judgment in decisions AI can inform but cannot make</div>
+        <div class="col-item col-item-light"><div class="col-dot col-dot-blue" aria-hidden="true"></div>Domain expertise applied as a team-level overlay on these six domains</div>
+      </div>
+    </div>
+
+    <div class="inline-cta fade-up" role="complementary" aria-label="Assessment call to action">
+      <div class="inline-cta-text">
+        <h3>Wondering where you stand?</h3>
+        <p>The Bearing AI Fluency Assessment gives each PM a clear, honest starting point — measuring proficiency across both Efficiency AI and Opportunity AI, and returning a score at one of three levels for each dimension independently.</p>
+      </div>
+      <a href="assessment_landing.html" class="inline-cta-btn">Take the Bearing Assessment →</a>
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- THE FUTURE OF PRODUCT WORK -->
+  <div class="section-dark" id="future-section">
+    <div class="section-dark-inner">
+      <p class="section-eyebrow fade-up">Why this framework exists</p>
+      <h2 class="section-title fade-up">The bottleneck is moving.</h2>
+      <p class="section-lead fade-up">Product management has always required holding a lot of things together at once: writing requirements, synthesizing research, driving alignment. These are real contributions. They are also, increasingly, the parts of the job that AI is becoming capable of handling. As that structural layer shifts, the work that has always been hardest to do well becomes more consequential.</p>
+      <div class="shifts-grid" role="list">
+        <div class="shift-card" role="listitem">
+          <p class="shift-num">01</p>
+          <h3 class="shift-title">The premium on good judgment</h3>
+          <p class="shift-desc">As AI takes on more of the structural layer, the premium shifts almost entirely to the quality of thinking and decision-making. Which problem is worth solving, and which one just feels urgent? When two reasonable options are on the table, which do you choose, and what does your reasoning say about what you believe? These are questions AI can inform but cannot answer — they require judgment grounded in business context and connected to a clear sense of what the product is trying to accomplish.</p>
+        </div>
+        <div class="shift-card" role="listitem">
+          <p class="shift-num">02</p>
+          <h3 class="shift-title">From generation to curation</h3>
+          <p class="shift-desc">When a tool can produce multiple versions of a spec, several framings of a research synthesis, or a range of approaches to a prioritization problem, the bottleneck stops being the ability to produce those things and starts being the ability to judge them. Which framing is right? Where is the AI's reasoning sound, and where has it missed something only someone with deeper context would catch? Those who can evaluate AI output with genuine rigor will consistently produce better outcomes than those who accept the first plausible result.</p>
+        </div>
+        <div class="shift-card" role="listitem">
+          <p class="shift-num">03</p>
+          <h3 class="shift-title">Systems thinking and orchestration</h3>
+          <p class="shift-desc">As AI agents take on more execution work, your role begins to resemble something closer to an architect than a coordinator. Each agent has a defined scope — one synthesizes research, another drafts requirements, another generates code, another monitors post-launch signal. Your job is to understand how those agents relate to each other, where the handoffs happen, and where gaps or conflicts can emerge. When the mechanical work is largely automated, the quality of your thinking about how the system is designed — and how you intervene when something goes wrong — is what determines whether the work produces the right outcome.</p>
+        </div>
+        <div class="shift-card" role="listitem">
+          <p class="shift-num">04</p>
+          <h3 class="shift-title">Speed, iteration, and the relationship with risk</h3>
+          <p class="shift-desc">Faster delivery cycles create real opportunity, and they also change your relationship with risk. Slower processes gave you something valuable alongside their frustrations: time between a decision and its consequences, time to reconsider an assumption before it became a shipped feature. When cycle times compress, those natural checkpoints disappear — and you have to build that deliberate reflection in yourself. The PMs who navigate this well make confident decisions knowing the information is incomplete, and treat each release as the beginning of a learning cycle rather than the end of a delivery one.</p>
+        </div>
+        <div class="shift-card" role="listitem" style="grid-column: 1 / -1;">
+          <p class="shift-num">05</p>
+          <h3 class="shift-title">Autonomy, accountability, and the governance instinct</h3>
+          <p class="shift-desc">As AI systems take on more autonomous actions within product workflows, your accountability expands in ways that are not always obvious at first. Governance — the decisions about how AI systems are designed, constrained, and monitored within your product — is becoming a core product responsibility rather than a compliance afterthought. An automated workflow that produces a biased outcome, a feature that erodes user trust, a release that creates a compliance issue: these trace back to the people who defined the goals, set the parameters, and chose to deploy the system. The instinct to ask what could go wrong, and for whom, needs to be present from the beginning of the work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <section id="how-to-use-section" aria-labelledby="how-to-use-heading">
+    <p class="section-eyebrow fade-up">How to use this framework</p>
+    <h2 class="section-title fade-up" id="how-to-use-heading">Differentiated by seniority, built for all PM levels.</h2>
+    <p class="section-lead fade-up">The framework contains six domains, each covering a distinct area of PM responsibility. Within each domain, individual skills are described along with guidance on which seniority level the skill is most critical for. Use these definitions to calibrate your focus.</p>
+
+    <div class="seniority-grid" role="list">
+      <div class="seniority-card" role="listitem">
+        <p class="seniority-label">Level 1</p>
+        <h3 class="seniority-title">Mid PM</h3>
+        <p class="seniority-years">3–7 years experience</p>
+        <p class="seniority-desc">Skills focused on execution, agentic workflow proficiency, and day-to-day data and delivery capabilities. Building the habits and tool fluency that form the foundation of everything else.</p>
+      </div>
+      <div class="seniority-card" role="listitem">
+        <p class="seniority-label">Level 2</p>
+        <h3 class="seniority-title">Senior PM</h3>
+        <p class="seniority-years">7+ years experience</p>
+        <p class="seniority-desc">Skills that span execution and strategy, including cross-domain thinking, storytelling, and research leadership. Operating at the intersection of delivery and direction.</p>
+      </div>
+      <div class="seniority-card" role="listitem">
+        <p class="seniority-label">Level 3</p>
+        <h3 class="seniority-title">Exec</h3>
+        <p class="seniority-years">Directors, VPs, CPO</p>
+        <p class="seniority-desc">Skills focused on organizational design, governance, talent strategy, and AI investment decisions. Responsible for how the team operates and how it grows, not just what it ships.</p>
+      </div>
+    </div>
+
+    <div class="use-note fade-up" role="note">
+      <strong>Note on domain expertise:</strong> Domain knowledge specific to your team — such as ad tech knowledge, platform experience, or content domain fluency — is intentionally excluded from this core framework. It should be applied as a seventh domain overlay alongside these six. This framework covers how PMs work, not necessarily what they build.
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- SIX DOMAINS -->
+  <section id="domains-section" aria-labelledby="domains-heading">
+    <p class="section-eyebrow fade-up">The six domains</p>
+    <h2 class="section-title fade-up" id="domains-heading">Each domain covers a distinct area of PM responsibility.</h2>
+    <p class="section-lead fade-up">Together they cover the full scope of what product managers need to be effective in an AI-augmented work environment. Click any domain to explore the skills it contains.</p>
+
+    <div class="domains-grid" role="list" id="domainsGrid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- SKILLS IN DETAIL -->
+  <section id="skills-section" aria-labelledby="skills-heading">
+    <p class="section-eyebrow fade-up">Skills in detail</p>
+    <h2 class="section-title fade-up" id="skills-heading">All 22 skills, filterable by domain and seniority.</h2>
+    <p class="section-lead fade-up">Filter by domain or seniority level to find the skills most relevant to where you are today. Every skill includes a description of what it means in practice.</p>
+
+    <div class="filter-bar fade-up" role="group" aria-label="Filter skills">
+      <span class="filter-label">Domain:</span>
+      <button class="filter-btn active" data-domain="all" onclick="filterSkills('domain','all')">All</button>
+      <button class="filter-btn" data-domain="1" onclick="filterSkills('domain','1')"><span class="filter-dot" style="background:#3EC9A0"></span>Agentic</button>
+      <button class="filter-btn" data-domain="2" onclick="filterSkills('domain','2')"><span class="filter-dot" style="background:#8B84F5"></span>Data</button>
+      <button class="filter-btn" data-domain="3" onclick="filterSkills('domain','3')"><span class="filter-dot" style="background:#E8A020"></span>Strategy</button>
+      <button class="filter-btn" data-domain="4" onclick="filterSkills('domain','4')"><span class="filter-dot" style="background:#E0527E"></span>Discovery</button>
+      <button class="filter-btn" data-domain="5" onclick="filterSkills('domain','5')"><span class="filter-dot" style="background:#3898D8"></span>Launch</button>
+      <button class="filter-btn" data-domain="6" onclick="filterSkills('domain','6')"><span class="filter-dot" style="background:#5FA82A"></span>Executive</button>
+      <div class="filter-divider" aria-hidden="true"></div>
+      <span class="filter-label">Level:</span>
+      <button class="filter-btn active" data-level="all" onclick="filterSkills('level','all')">All levels</button>
+      <button class="filter-btn" data-level="Mid PM" onclick="filterSkills('level','Mid PM')">Mid PM</button>
+      <button class="filter-btn" data-level="Senior PM" onclick="filterSkills('level','Senior PM')">Senior PM</button>
+      <button class="filter-btn" data-level="Exec" onclick="filterSkills('level','Exec')">Exec</button>
+    </div>
+
+    <div class="skills-col-headers" aria-hidden="true">
+      <span>Domain</span>
+      <span>Skill</span>
+      <span>Level</span>
+    </div>
+
+    <div class="skills-table fade-up" id="skillsTable" role="list">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <div class="section-divider" role="separator"></div>
+
+  <!-- FLUENCY MODEL -->
+  <section id="fluency-section" aria-labelledby="fluency-heading">
+    <p class="section-eyebrow fade-up">The AI Fluency Model</p>
+    <h2 class="section-title fade-up" id="fluency-heading">Two dimensions. Six levels. One honest picture.</h2>
+    <p class="section-lead fade-up">Every skill in this framework can be understood through two lenses that together define what it means to be AI fluent as a product manager. These two dimensions are independent — a PM can be highly proficient in one while still early in the other. Click each level to see what it looks and feels like in practice.</p>
+
+    <div class="fluency-grid" id="fluencyGrid">
+      <!-- Injected by JS -->
+    </div>
+
+    <div class="inline-cta fade-up" role="complementary" style="margin-top: 48px;" aria-label="Assessment prompt">
+      <div class="inline-cta-text">
+        <h3>Find out where you score on both dimensions.</h3>
+        <p>The Bearing AI Fluency Assessment measures your current proficiency across Efficiency AI and Opportunity AI independently, and returns a score at Foundational, Applied, or Advanced for each. No guesswork — a clear, honest starting point.</p>
+      </div>
+      <a href="assessment_landing.html" class="inline-cta-btn">Take the Bearing Assessment →</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════ CTA ═══════════════════════════════════════ -->
+<div class="cta-section" id="cta-section">
+  <h2 class="cta-title">The path forward starts with knowing <em>where you are.</em></h2>
+  <p class="cta-byline">The Bearing AI Fluency Assessment is designed to give each PM a clear, honest starting point — replacing the guesswork of self-evaluation with a specific, actionable picture of where you are today across both dimensions of AI fluency.</p>
+  <div class="cta-steps" role="list">
+    <div class="cta-step" role="listitem">
+      <p class="cta-step-num">01</p>
+      <div>
+        <p class="cta-step-title">Take the Bearing AI Fluency Assessment</p>
+        <p class="cta-step-desc">Receive a score across every applicable skill and domain for both Efficiency AI and Opportunity AI independently. Your personalized report replaces guesswork with a precise, honest picture of where you stand today and surfaces the specific gaps most worth closing.</p>
+      </div>
+    </div>
+    <div class="cta-step" role="listitem">
+      <p class="cta-step-num">02</p>
+      <div>
+        <p class="cta-step-title">Build your learning and development roadmap</p>
+        <p class="cta-step-desc">Use your scores and the reporting recommendations to identify which skills and domains to prioritize. Your roadmap should reflect where you are now, where your role demands you go next, and a sequenced plan for getting there across both dimensions of AI fluency.</p>
+      </div>
+    </div>
+    <div class="cta-step" role="listitem">
+      <p class="cta-step-num">03</p>
+      <div>
+        <p class="cta-step-title">Execute — with real work, real learning</p>
+        <p class="cta-step-desc">Put the roadmap into motion through a mix of internal training, external courses, and hands-on project work tied directly to your deliverables. As you make meaningful progress, consider retaking the assessment to track growth. And if it feels right, share your personalized report with your manager to open the door to coaching and further support.</p>
+      </div>
+    </div>
+  </div>
+  <div class="cta-buttons">
+    <a href="index.html" class="cta-btn cta-btn-outline">Explore the companion essay →</a>
+    <a href="assessment_landing.html" class="cta-btn cta-btn-solid" id="assessmentLink">Take the Bearing Assessment →</a>
+  </div>
+</div>
+
+<!-- AUTHOR BIO -->
+<section class="author-section" id="author-bio" aria-labelledby="author-heading">
+  <div class="author-inner">
+    <div class="author-avatar">
+      <img src="data:image/jpeg;base64,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" alt="Adrian Chiu">
+    </div>
+    <div>
+      <p class="author-label">About the author</p>
+      <h2 class="author-name" id="author-heading">Adrian Chiu</h2>
+      <p class="author-bio">Adrian Chiu is a product executive with over 25 years of experience across media and technology, with deep expertise in advertising technology, streaming, usability, experimentation, and monetization. He has held leadership roles at Paramount, Hulu, Microsoft, and aQuantive, where he has built and scaled products that power large, global digital businesses. He cares deeply about product management and the people who do this work, and is a builder at heart, drawn to turning ideas into real, working systems, and to helping product managers grow into thoughtful, high-ownership leaders.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-left">AI Fluency Framework for Product Managers &nbsp;·&nbsp; AI Fluency Series &nbsp;·&nbsp; © 2026 Adrian Chiu</p>
+  <p class="footer-right">Companion essay: <a href="index.html">The Future of Work for Product Managers</a></p>
+</footer>
+
+<!-- ═══════════════════════════════════════ MODAL ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="domainModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <div class="modal-header-accent" id="modalAccent"></div>
+      <div class="modal-header-row">
+        <div>
+          <p class="modal-domain-num" id="modalDomainNum"></p>
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <p class="modal-desc" id="modalDesc"></p>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Close domain details">✕</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <p class="modal-skills-label">Skills in this domain</p>
+      <div id="modalSkills"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ JAVASCRIPT ═══════════════════════════════════════ -->
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────────────
+const DOMAINS = [
+  {
+    id: 1,
+    name: "Agentic Workflow Direction",
+    short: "Directing AI agents effectively as active participants in the product development workflow.",
+    color: { accent: '#3EC9A0' },
+    svg: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>',
+    desc: "This domain covers the skills PMs need to direct AI agents effectively as active participants in the product development workflow. As agents take on more of the execution work, the quality of a PM's direction becomes the primary lever of output quality. In practice, this means knowing how to write requirements an agent can act on without ambiguity, structuring work so agents can operate asynchronously, and reviewing agent-generated outputs with enough judgment to know what is ready to move forward.",
+    skills: [
+      { name: "Prompt and requirements engineering", practice: "Translating product intent into precise, unambiguous instructions an AI agent can execute. This means structuring context, constraints, and expected outputs so an agent can work autonomously without constant clarification. The quality of direction is the primary lever of output quality.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Async agent workflow design", practice: "Structuring work so agents can operate overnight or in parallel without constant supervision. This includes breaking features into discrete, verifiable tasks and knowing when to check in versus let the agent run. Poorly designed async work compounds errors silently.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Output validation and quality judgment", practice: "Critically reviewing agent-generated code, specs, and assets. Knowing what good enough to ship looks like versus what needs revision, and being able to give precise, actionable feedback that redirects without restarting.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Guardrail literacy", practice: "Deep familiarity with design system, architecture, security, and platform constraints so requirements fed to agents stay within acceptable boundaries. Knowing where agents are likely to drift and how to constrain them up front rather than catching it in review.", levels: ["Senior PM", "Exec"] },
+      { name: "Rapid prototyping and visual requirements", practice: "Using AI-assisted tools to produce low-fidelity but functional representations of a product experience. Showing intent visually rather than describing it in text, reducing the translation gap between idea and build.", levels: ["Mid PM", "Senior PM"] },
+    ]
+  },
+  {
+    id: 2,
+    name: "Data Fluency & Self-Serve Insight",
+    short: "Accessing, interpreting, and acting on data independently without waiting on a BI queue.",
+    color: { accent: '#8B84F5' },
+    svg: '<path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 4-6"/>',
+    desc: "This domain covers the skills PMs need to access, interpret, and act on data independently. As AI tools reduce routine dependencies on data analysts, the expectation is that PMs can get to answers themselves and do so quickly. This means querying product data directly using natural language tools, synthesizing large volumes of feedback into a clear point of view, and designing experiments with enough statistical rigor to trust the results.",
+    skills: [
+      { name: "Natural language data querying", practice: "Using AI tools to interrogate data directly via plain language, pulling product metrics on demand without waiting on a BI request. The skill is not in using the tools — it is in knowing what question to ask and whether the answer makes sense.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Insight synthesis and AI recommendation vetting", practice: "Moving from raw data to a decision-relevant conclusion quickly, while critically evaluating AI-generated recommendations rather than accepting them at face value. Knowing when an AI recommendation confirms a useful pattern versus when it is pattern-matching noise.", levels: ["Mid PM", "Senior PM", "Exec"] },
+      { name: "Metric definition and instrumentation thinking", practice: "Knowing what to measure for novel product experiences before a BI analyst defines it. PMs must own metric design, not just metric consumption. For new features — especially AI-native ones — the right metric often does not yet exist.", levels: ["Senior PM", "Exec"] },
+      { name: "Experimental design literacy", practice: "Designing valid A/B tests or holdout experiments using AI tooling. Understanding sample sizing, confounds, and statistical validity well enough to catch design flaws before they compromise results that a team will act on.", levels: ["Mid PM", "Senior PM"] },
+    ]
+  },
+  {
+    id: 3,
+    name: "Strategic Judgment & Prioritization",
+    short: "Higher-order thinking that becomes more critical, not less, as AI accelerates delivery.",
+    color: { accent: '#E8A020' },
+    svg: '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+    desc: "This domain covers the higher-order thinking skills that become more critical as AI accelerates delivery. When the pace of output increases, the quality of the decisions driving that output becomes the primary differentiator. Sound strategic judgment also requires a working awareness of legal and contractual obligations so that decisions are grounded in what the business can actually do, not just what is technically feasible.",
+    skills: [
+      { name: "Systems thinking", practice: "Reasoning about the product as an interconnected ecosystem, understanding how decisions in one area create ripple effects in another. Anticipating second and third-order consequences before they become problems — especially relevant as agentic changes can propagate faster than teams can react.", levels: ["Mid PM", "Senior PM", "Exec"] },
+      { name: "Opportunity sizing and sequencing", practice: "When a team can ship significantly more features in the same time, the margin for building incoherent things shrinks. Making sharp calls about what to build next and in what order — and defending those calls clearly — becomes the primary value a PM adds to the delivery process.", levels: ["Senior PM", "Exec"] },
+      { name: "Vision articulation and product storytelling", practice: "Communicating a multi-horizon product vision that agents, engineers, and executives can all orient around, while also building confidence in the direction with stakeholders who need to trust the path. At AI pace, misalignment on direction is expensive.", levels: ["Senior PM", "Exec"] },
+      { name: "Risk and tradeoff reasoning", practice: "At compressed delivery speeds, bad decisions surface faster and roll back harder. Sharp instincts for what could go wrong and what the cost of being wrong would be, with the ability to make tradeoff calls quickly and communicate the reasoning clearly.", levels: ["Mid PM", "Senior PM", "Exec"] },
+    ]
+  },
+  {
+    id: 4,
+    name: "Discovery, Research & Market Intelligence",
+    short: "Generating insight about users, markets, and competitors at scale — knowing what to look for.",
+    color: { accent: '#E0527E' },
+    svg: '<circle cx="10" cy="10" r="7"/><path d="m21 21-4.35-4.35"/><line x1="10" y1="7" x2="10" y2="13"/><line x1="7" y1="10" x2="13" y2="10"/>',
+    desc: "This domain covers the skills PMs need to generate insight about users, markets, and competitors. AI dramatically expands the scale and speed at which research can be conducted, but knowing what to look for and what to do with what you find remains irreducibly human. The most important skill in this domain is not using the tools — it is knowing how to ask the right questions so the research reveals something genuinely useful rather than confirming what you already believed.",
+    skills: [
+      { name: "AI-augmented user research", practice: "Using AI to run moderated research at scale, synthesize qualitative feedback rapidly, and surface behavioral patterns from large datasets. Knowing how to design research that AI can support without losing the depth that makes it useful — and being able to distinguish a genuine user insight from an artifact of the synthesis.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Competitive and market intelligence", practice: "Using AI to continuously monitor what competitors are doing across the product landscape, then applying human judgment to determine what it actually means for your roadmap and strategy. The tool can track. The PM has to interpret.", levels: ["Senior PM", "Exec"] },
+    ]
+  },
+  {
+    id: 5,
+    name: "Launch, GTM & High-Velocity Delivery",
+    short: "Shipping and coordinating effectively as delivery cycles compress and release cadences accelerate.",
+    color: { accent: '#3898D8' },
+    svg: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2l4-4-3-3-4 4z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>',
+    desc: "This domain covers the skills PMs need to ship and coordinate effectively as delivery cycles accelerate. The shift toward smaller pods and more frequent releases changes what launch readiness looks like. As teams become leaner, the PM becomes the primary person holding the cross-functional picture together — which means alignment loops have to close faster, without creating a bottleneck.",
+    skills: [
+      { name: "PM-engineer pairing in agentic context", practice: "Working fluidly in a small pod where conversation is the requirements artifact. This means thinking out loud productively, being willing to revise direction in real time, and building trust quickly with engineers who are working faster than traditional cycles allowed.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Continuous launch and GTM orchestration", practice: "Managing a cadence of frequent, incremental launches rather than big-bang releases, and coordinating the full GTM motion at that pace. This includes keeping marketing, support, legal, and commercial aligned on what is shipping and when — without that coordination becoming the thing that slows the team down.", levels: ["Mid PM", "Senior PM"] },
+      { name: "Cross-system and stakeholder alignment at speed", practice: "Flagging cross-domain impacts early and closing alignment loops with design, legal, ops, and commercial teams without becoming a bottleneck. At high delivery velocity, misalignment that used to surface at the quarterly review now surfaces at the weekly launch.", levels: ["Senior PM", "Exec"] },
+    ]
+  },
+  {
+    id: 6,
+    name: "AI Org Leadership & Ethics",
+    short: "Executive responsibilities around org design, AI governance, talent strategy, and ethical judgment.",
+    color: { accent: '#5FA82A' },
+    svg: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/>',
+    desc: "This domain covers the skills that sit primarily with product executives. As AI reshapes how product teams are structured and how work gets done, leaders carry a set of responsibilities that go beyond the individual skill level. This means designing the operating model for how agentic teams work, making informed talent decisions, and ensuring the organization builds and ships with ethical responsibility at every level.",
+    skills: [
+      { name: "AI workflow architecture", practice: "Designing the operating model for how agentic pods are structured, how agents are configured and governed, how guardrails are maintained, and how quality is assured at scale. This is the equivalent of defining how the factory works, not just what it produces.", levels: ["Exec"] },
+      { name: "Talent and role evolution strategy", practice: "Making informed decisions about how PM roles change — including which skills to hire for versus develop, how to coach the existing team through the transition, and what the team structure should look like in 12–24 months as agentic work becomes the default.", levels: ["Exec"] },
+      { name: "Ethical product judgment, user trust and compliance", practice: "As agents build and ship faster, the risk of crossing a line increases at every level. An experience that feels manipulative, a data practice that erodes trust, or a feature that looks fine in a test but causes harm at scale — these are product failures before they are compliance failures. This skill is relevant at every level, not just exec.", levels: ["Mid PM", "Senior PM", "Exec"] },
+      { name: "AI tool and vendor strategy", practice: "Evaluating and selecting the right agentic tools, building the internal investment case, and staying current on the capability landscape without chasing every new release. Knowing the difference between what a vendor says their tool does and what it actually does in your environment.", levels: ["Exec"] },
+    ]
+  }
+];
+
+const FLUENCY = {
+  eff: {
+    label: "Efficiency AI",
+    sub: "Using AI to do your existing work faster and better. This is the foundation of AI fluency and where most people begin.",
+    color: '#3D5BA8',
+    levels: [
+      { name: "Foundational", desc: "You reach for AI when a task feels like an obvious fit, but your use is occasional and reactive rather than systematic. You may be surprised by what AI can do when you try it, but you don't yet have habits or workflows built around it. You are still discovering what is possible." },
+      { name: "Applied", desc: "AI has become a consistent part of how you work across most PM responsibilities. In practice, this might mean you use AI tools to draft documents, synthesize research notes, and pull data — and you spend less time on the execution layer as a result. Your tool choices are intentional, not random." },
+      { name: "Advanced", desc: "Your AI use is systematized to the point where agents handle substantial work asynchronously. In practice, this means you spend significantly less time on execution and significantly more time on judgment, quality review, and direction. You have moved from using tools to orchestrating them." },
+    ]
+  },
+  opp: {
+    label: "Opportunity AI",
+    sub: "Using AI to do things that were not previously possible at all. This is the horizon that separates good AI fluency from transformative AI fluency.",
+    color: '#D4537E',
+    levels: [
+      { name: "Foundational", desc: "You have begun asking not just how AI can help you work faster, but what AI makes possible that was not an option before. Your instinct is still developing, but you are open to rethinking what your product or team could do with AI in the mix. You can see the horizon even if you haven't reached it." },
+      { name: "Applied", desc: "You regularly use AI to do things that would be impossible without it, not merely slow. In practice, this might mean running research at a scale that would have required a dedicated team, or prototyping an interaction that would have taken weeks of engineering time. The ceiling of what you can accomplish has moved." },
+      { name: "Advanced", desc: "You consistently find and act on ways AI can expand what your team is capable of, not just speed up what already exists. This might look like identifying entirely new product surfaces, unlocking new user segments, or redesigning workflows that previously required headcount. You are building things that would not exist without you." },
+    ]
+  }
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────────────
+let domainFilter = 'all';
+let levelFilter  = 'all';
+
+// ── RENDER DOMAINS ────────────────────────────────────────────────────────────────────
+function renderDomains() {
+  const grid = document.getElementById('domainsGrid');
+  DOMAINS.forEach((d, i) => {
+    const card = document.createElement('div');
+    card.className = 'domain-card';
+    card.setAttribute('role', 'listitem');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', `Domain ${d.id}: ${d.name}. Click to explore ${d.skills.length} skills.`);
+    card.style.transitionDelay = (i * 0.07) + 's';
+    card.innerHTML = `
+      <div class="domain-card-header">
+        <div class="domain-card-header-top">
+          <p class="domain-card-num" style="color:${d.color.accent};">Domain ${d.id}</p>
+          <div class="domain-card-icon-badge" style="background:${d.color.accent}22; border:1px solid ${d.color.accent}44;" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="${d.color.accent}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">${d.svg}</svg>
+          </div>
+        </div>
+        <h3 class="domain-card-title">${d.name}</h3>
+      </div>
+      <div class="domain-card-body">
+        <p class="domain-card-short">${d.short}</p>
+        <div class="domain-card-meta">
+          <p class="domain-card-count">
+            <span class="domain-card-count-dot" style="background:${d.color.accent};"></span>
+            ${d.skills.length} skill${d.skills.length > 1 ? 's' : ''}
+          </p>
+          <span class="domain-card-explore" style="color:${d.color.accent};">
+            Explore <span>→</span>
+          </span>
+        </div>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(d));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(d); } });
+    grid.appendChild(card);
+  });
+}
+
+// ── RENDER SKILLS TABLE ───────────────────────────────────────────────────────────────
+function renderSkillsTable() {
+  const table = document.getElementById('skillsTable');
+  DOMAINS.forEach(d => {
+    d.skills.forEach(s => {
+      const row = document.createElement('div');
+      row.className = 'skills-trow';
+      row.setAttribute('role', 'listitem');
+      row.dataset.domain = d.id;
+      row.dataset.levels = s.levels.join(',');
+      row.style.borderLeft = `3px solid ${d.color.accent}`;
+      const shortName = d.name.split('&')[0].replace(/,.*/, '').trim();
+      row.innerHTML = `
+        <div class="skills-trow-domain">
+          <span class="skills-trow-dchip" style="background:${d.color.accent}18; border:1px solid ${d.color.accent}44;">
+            <span class="skills-trow-dchip-num" style="color:${d.color.accent};">Domain ${d.id}</span>
+            <span class="skills-trow-dchip-name" style="color:${d.color.accent};">${shortName}</span>
+          </span>
+        </div>
+        <div>
+          <p class="skills-trow-skill"><span class="skills-dot" style="background:${d.color.accent};"></span>${s.name}</p>
+          <p class="skills-trow-desc">${s.practice}</p>
+        </div>
+        <div class="skills-trow-badges">
+          ${s.levels.map(l => `<span class="skill-badge ${
+            l === 'Mid PM' ? 'badge-mid' : l === 'Senior PM' ? 'badge-senior' : 'badge-exec'
+          }">${l}</span>`).join('')}
+        </div>
+      `;
+      table.appendChild(row);
+    });
+  });
+}
+
+// ── FILTER SKILLS ─────────────────────────────────────────────────────────────────────
+function filterSkills(type, val) {
+  if (type === 'domain') {
+    domainFilter = val;
+    document.querySelectorAll('[data-domain]').forEach(b => {
+      if (b.tagName === 'BUTTON') b.classList.toggle('active', b.dataset.domain === val);
+    });
+  } else {
+    levelFilter = val;
+    document.querySelectorAll('[data-level]').forEach(b => {
+      b.classList.toggle('active', b.dataset.level === val);
+    });
+  }
+  document.querySelectorAll('.skills-trow').forEach(row => {
+    const dMatch = domainFilter === 'all' || row.dataset.domain === domainFilter;
+    const lMatch = levelFilter === 'all' || row.dataset.levels.includes(levelFilter);
+    row.classList.toggle('hidden', !(dMatch && lMatch));
+  });
+}
+
+// ── RENDER FLUENCY MODEL ──────────────────────────────────────────────────────────────
+function renderFluency() {
+  const grid = document.getElementById('fluencyGrid');
+
+  // Row 1: column headers
+  ['eff','opp'].forEach(key => {
+    const f = FLUENCY[key];
+    const head = document.createElement('p');
+    head.className = `fluency-col-head fluency-col-head-${key}`;
+    head.innerHTML = f.label;
+    grid.appendChild(head);
+  });
+
+  // Row 2: subtitles
+  ['eff','opp'].forEach(key => {
+    const f = FLUENCY[key];
+    const sub = document.createElement('p');
+    sub.className = 'fluency-col-sub';
+    sub.innerHTML = f.sub;
+    grid.appendChild(sub);
+  });
+
+  // Rows 3–5: one level card per column, paired so each pair shares a row
+  const numLevels = FLUENCY.eff.levels.length;
+  for (let i = 0; i < numLevels; i++) {
+    ['eff','opp'].forEach(key => {
+      const f = FLUENCY[key];
+      const l = f.levels[i];
+      const card = document.createElement('div');
+      card.className = `fluency-level fluency-${key}`;
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-expanded', 'false');
+      card.setAttribute('onclick', 'toggleFluency(this)');
+      card.setAttribute('onkeydown', "if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFluency(this);}");
+      card.innerHTML = `
+        <div class="fluency-level-header">
+          <span class="fluency-level-name">
+            <span class="fluency-level-dot"></span>
+            ${l.name}
+          </span>
+          <span class="fluency-level-chevron" aria-hidden="true">▼</span>
+        </div>
+        <div class="fluency-level-body">
+          <div class="fluency-level-inner">${l.desc}</div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  // Note spanning both columns
+  const note = document.createElement('div');
+  note.className = 'fluency-note fade-up';
+  note.innerHTML = '<strong>These two dimensions are independent.</strong> A PM can be at Applied in Efficiency AI and Foundational in Opportunity AI, or vice versa. There is no requirement to master one before developing the other. Both grow in parallel, shaped by role, context, and the specific opportunities each PM encounters.';
+  grid.appendChild(note);
+}
+
+function toggleFluency(el) {
+  const isExpanded = el.classList.toggle('active');
+  el.setAttribute('aria-expanded', isExpanded);
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────────────
+function openModal(domain) {
+  const modal = document.getElementById('domainModal');
+  document.getElementById('modalAccent').style.background = domain.color.accent;
+  document.getElementById('modalDomainNum').textContent = `Domain ${domain.id}`;
+  document.getElementById('modalDomainNum').style.color = domain.color.accent;
+  document.getElementById('modalTitle').textContent = domain.name;
+  document.getElementById('modalDesc').textContent = domain.desc;
+
+  const skillsEl = document.getElementById('modalSkills');
+  skillsEl.innerHTML = '';
+  domain.skills.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'skill-row';
+    row.innerHTML = `
+      <div class="skill-row-header" tabindex="0" role="button" aria-expanded="false"
+           onclick="toggleSkill(this.parentElement)"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleSkill(this.parentElement);}">
+        <div class="skill-row-left">
+          <span class="skill-row-name">${s.name}</span>
+        </div>
+        <div class="skill-badges">
+          ${s.levels.map(l => `<span class="skill-badge ${
+            l === 'Mid PM' ? 'badge-mid' : l === 'Senior PM' ? 'badge-senior' : 'badge-exec'
+          }">${l}</span>`).join('')}
+        </div>
+        <span class="skill-chevron" aria-hidden="true">▼</span>
+      </div>
+      <div class="skill-row-body">
+        <div class="skill-row-body-inner">${s.practice}</div>
+      </div>
+    `;
+    skillsEl.appendChild(row);
+  });
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modalClose').focus();
+}
+
+function closeModal() {
+  document.getElementById('domainModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleSkill(row) {
+  const isExp = row.classList.toggle('expanded');
+  row.querySelector('.skill-row-header').setAttribute('aria-expanded', isExp);
+}
+
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('domainModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('domainModal')) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────────────
+function navTo(id) {
+  const el = document.getElementById(id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+// ── READING PROGRESS ─────────────────────────────────────────────────────────────────
+const prog = document.getElementById('readingProgress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  prog.style.width = Math.min(pct, 100) + '%';
+  prog.setAttribute('aria-valuenow', Math.round(pct));
+}, { passive: true });
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────────────────────────────────
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+function observeAll() {
+  document.querySelectorAll(
+    '.fade-up, .domain-card, .seniority-card, .shift-card, .cta-step'
+  ).forEach((el, i) => {
+    if (!el.closest('.modal-overlay')) {
+      el.style.transitionDelay = el.style.transitionDelay || (i % 5) * 0.06 + 's';
+      obs.observe(el);
+    }
+  });
+}
+
+// ── ACTIVE NAV ────────────────────────────────────────────────────────────────────────
+const sectionNavMap = {
+  'overview-section': 'overview',
+  'how-to-use-section': 'how-to-use',
+  'domains-section': 'domains',
+  'skills-section': 'skills',
+  'fluency-section': 'fluency',
+  'cta-section': 'cta'
+};
+const navObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); n.removeAttribute('aria-current'); });
+      const key = sectionNavMap[e.target.id];
+      if (key) {
+        const navBtn = document.querySelector(`[data-section="${key}"]`);
+        if (navBtn) { navBtn.classList.add('active'); navBtn.setAttribute('aria-current', 'true'); }
+      }
+    }
+  });
+}, { threshold: 0.2 });
+
+// ── INIT ──────────────────────────────────────────────────────────────────────────────
+renderDomains();
+renderSkillsTable();
+renderFluency();
+observeAll();
+
+Object.keys(sectionNavMap).forEach(id => {
+  const el = document.getElementById(id);
+  if (el) navObs.observe(el);
+});
+</script>
+
+</body>
+</html>
